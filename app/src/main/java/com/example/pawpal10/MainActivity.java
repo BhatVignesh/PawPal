@@ -2,89 +2,99 @@ package com.example.pawpal10;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowCompat;
-import androidx.core.view.WindowInsetsCompat;
-import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class MainActivity extends AppCompatActivity {
 
-    FirebaseAuth auth;
-    Button logoutButton;
-    TextView textView;
-    FirebaseUser user;
-    Button firstFragmentBtn, secondFragmentBtn;
+    private FirebaseAuth auth;
+    private FirebaseUser user;
+    private Button logoutButton;
+    private TextView textView;
+    private BottomNavigationView bottomNavigationView;
+
+    // Map to store menu item IDs and their corresponding fragments
+    private Map<Integer, Fragment> fragmentMap = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return WindowInsetsCompat.CONSUMED;
-        });
-
+        // Initialize Firebase Auth
         auth = FirebaseAuth.getInstance();
-        logoutButton = findViewById(R.id.Logout);
-        textView = findViewById(R.id.user_details);
-        user = auth.getCurrentUser();
 
+        // Initialize UI elements
+//        logoutButton = findViewById(R.id.logout_button); // Assuming your button ID is logout_button
+//        textView = findViewById(R.id.user_details); // Assuming your TextView ID is user_details
+        bottomNavigationView = findViewById(R.id.bottomNavigationView);
+
+        // Populate fragmentMap with menu item IDs and their corresponding fragments
+        fragmentMap.put(R.id.home_icon, new HomeFragment());
+        fragmentMap.put(R.id.catagory_icon, new catagoryFragment());
+        fragmentMap.put(R.id.paw_icon, new pawFragment());
+        fragmentMap.put(R.id.medical_icon, new checkupFragment());
+        fragmentMap.put(R.id.profile_icon, new profileFragment());
+
+        // Set initial fragment
+        replaceFragment(new HomeFragment());
+
+        // Check if user is logged in
+        user = auth.getCurrentUser();
         if (user == null) {
+            // Redirect to login if not logged in
             Intent intent = new Intent(getApplicationContext(), Login.class);
             startActivity(intent);
             finish();
         } else {
-            textView.setText(user.getEmail());
+            // Set user details if logged in
+//            textView.setText(user.getEmail());
         }
 
-        logoutButton.setOnClickListener(new View.OnClickListener() {
+        // Bottom navigation item selection listener
+        bottomNavigationView.setOnItemSelectedListener(new BottomNavigationView.OnItemSelectedListener() {
             @Override
-            public void onClick(View v) {
-                FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(getApplicationContext(), Login.class);
-                startActivity(intent);
-                finish();
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                // Get the fragment corresponding to the selected menu item ID from fragmentMap
+                Fragment selectedFragment = fragmentMap.get(item.getItemId());
+                if (selectedFragment != null) {
+                    replaceFragment(selectedFragment);
+                    return true;
+                }
+                return false;
             }
         });
-
-        firstFragmentBtn=findViewById(R.id.fragment1btn);
-        secondFragmentBtn=findViewById(R.id.fragment2btn);
-        firstFragmentBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                replaceFragment(new Fragment1());
-            }
-        });
-        secondFragmentBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                replaceFragment(new Fragment2());
-            }
-        });
-
-
     }
 
     private void replaceFragment(Fragment fragment) {
-        FragmentManager fragmentManager=getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frameLayout,fragment);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frameLayout, fragment); // Assuming your FrameLayout ID is frameLayout
         fragmentTransaction.commit();
     }
 }
+
+
+
+
+
+
+
+
+
+
