@@ -11,14 +11,17 @@ pluginManagement {
         gradlePluginPortal()
     }
 }
+
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         google()
         mavenCentral()
+        maven {
+            url = uri("https://jitpack.io") // Correct syntax for Kotlin DSL
+        }
     }
 }
 
 rootProject.name = "PawPal 1.0"
 include(":app")
- 
