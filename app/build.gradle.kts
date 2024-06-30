@@ -27,8 +27,8 @@ android {
             )
         }
     }
-    buildFeatures{
-        viewBinding=true
+    buildFeatures {
+        viewBinding = true
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -46,4 +46,5 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+    implementation("com.github.denzcoskun:ImageSlideshow:0.1.2") // Correct syntax for Kotlin DSL
 }
