@@ -2,13 +2,15 @@ package com.example.pawpal10;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
+import android.widget.ArrayAdapter;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -24,9 +26,8 @@ public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth auth;
     private FirebaseUser user;
-    private Button logoutButton;
-    private TextView textView;
     private BottomNavigationView bottomNavigationView;
+    private ArrayAdapter<String> arrayAdapter;
 
     // Map to store menu item IDs and their corresponding fragments
     private Map<Integer, Fragment> fragmentMap = new HashMap<>();
@@ -40,8 +41,6 @@ public class MainActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
 
         // Initialize UI elements
-//        logoutButton = findViewById(R.id.logout_button); // Assuming your button ID is logout_button
-//        textView = findViewById(R.id.user_details); // Assuming your TextView ID is user_details
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
         // Populate fragmentMap with menu item IDs and their corresponding fragments
@@ -61,24 +60,43 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(getApplicationContext(), Login.class);
             startActivity(intent);
             finish();
-        } else {
-            // Set user details if logged in
-//            textView.setText(user.getEmail());
         }
 
-        // Bottom navigation item selection listener
-        bottomNavigationView.setOnItemSelectedListener(new BottomNavigationView.OnItemSelectedListener() {
+        // Set up the toolbar with search
+        Toolbar toolbar = findViewById(R.id.search_toolbar);
+        setSupportActionBar(toolbar);
+
+        // Initialize the adapter
+        String[] name = {"Home", "Category", "Paw", "Medical", "Profile"};
+        arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, name);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+
+        // Configure SearchView
+        searchView.setQueryHint("Type here to search");
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                // Get the fragment corresponding to the selected menu item ID from fragmentMap
-                Fragment selectedFragment = fragmentMap.get(item.getItemId());
-                if (selectedFragment != null) {
-                    replaceFragment(selectedFragment);
-                    return true;
-                }
+            public boolean onQueryTextSubmit(String query) {
+                // Handle search query submit
                 return false;
             }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                // Filter data based on newText
+                arrayAdapter.getFilter().filter(newText);
+                return true; // Return true to indicate the query has been handled
+            }
         });
+
+        return true;
     }
 
     private void replaceFragment(Fragment fragment) {
@@ -88,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 }
+
 
 
 
