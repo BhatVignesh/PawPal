@@ -6,6 +6,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,13 +25,15 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
-    private FirebaseAuth auth;
-    private FirebaseUser user;
-    private BottomNavigationView bottomNavigationView;
-    private ArrayAdapter<String> arrayAdapter;
+    FirebaseAuth auth;
+    FirebaseUser user;
+    BottomNavigationView bottomNavigationView;
 
     // Map to store menu item IDs and their corresponding fragments
-    private Map<Integer, Fragment> fragmentMap = new HashMap<>();
+    Map<Integer, Fragment> fragmentMap = new HashMap<>();
+    ListView listView;
+    String[] name = {"Home", "Category", "Paw", "Medical", "Profile"};
+    ArrayAdapter<String> arrayAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +43,6 @@ public class MainActivity extends AppCompatActivity {
         // Initialize Firebase Auth
         auth = FirebaseAuth.getInstance();
 
-        // Initialize UI elements
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
         // Populate fragmentMap with menu item IDs and their corresponding fragments
@@ -61,42 +63,23 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         }
+//        listView = view.findViewById(R.id.listview); // Corrected ID here
+//        arrayAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1, name);
+//        listView.setAdapter(arrayAdapter);
 
-        // Set up the toolbar with search
-        Toolbar toolbar = findViewById(R.id.search_toolbar);
-        setSupportActionBar(toolbar);
-
-        // Initialize the adapter
-        String[] name = {"Home", "Category", "Paw", "Medical", "Profile"};
-        arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, name);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_main, menu);
-
-        MenuItem searchItem = menu.findItem(R.id.action_search);
-        SearchView searchView = (SearchView) searchItem.getActionView();
-
-        // Configure SearchView
-        searchView.setQueryHint("Type here to search");
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        // Bottom navigation item selection listener
+        bottomNavigationView.setOnItemSelectedListener(new BottomNavigationView.OnItemSelectedListener() {
             @Override
-            public boolean onQueryTextSubmit(String query) {
-                // Handle search query submit
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                // Get the fragment corresponding to the selected menu item ID from fragmentMap
+                Fragment selectedFragment = fragmentMap.get(item.getItemId());
+                if (selectedFragment != null) {
+                    replaceFragment(selectedFragment);
+                    return true;
+                }
                 return false;
             }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                // Filter data based on newText
-                arrayAdapter.getFilter().filter(newText);
-                return true; // Return true to indicate the query has been handled
-            }
         });
-
-        return true;
     }
 
     private void replaceFragment(Fragment fragment) {
@@ -106,6 +89,33 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 }
+
+//Toolbar toolbar = findViewById(R.id.search_toolbar);
+//setSupportActionBar(toolbar);
+//
+//// Initialize the adapter
+//String[] name = {"Home", "Category", "Paw", "Medical", "Profile"};
+//arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, name);
+
+//MenuItem searchItem = menu.findItem(R.id.action_search);
+//SearchView searchView = (SearchView) searchItem.getActionView();
+//
+//// Configure SearchView
+//        searchView.setQueryHint("Type here to search");
+//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//    @Override
+//    public boolean onQueryTextSubmit(String query) {
+//        // Handle search query submit
+//        return false;
+//    }
+//
+//    @Override
+//    public boolean onQueryTextChange(String newText) {
+//        // Filter data based on newText
+//        arrayAdapter.getFilter().filter(newText);
+//        return true; // Return true to indicate the query has been handled
+//    }
+//});
 
 
 

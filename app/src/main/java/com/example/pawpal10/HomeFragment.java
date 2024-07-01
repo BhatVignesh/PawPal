@@ -18,9 +18,7 @@ import java.util.ArrayList;
 
 public class HomeFragment extends Fragment {
 
-    private ListView listView;
-    private String[] name = {"Home", "Category", "Paw", "Medical", "Profile"};
-    private ArrayAdapter<String> arrayAdapter;
+
 
     public HomeFragment() {
         // Required empty public constructor
@@ -32,9 +30,7 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         // Initialize ListView and ArrayAdapter
-        listView = view.findViewById(R.id.listview); // Corrected ID here
-        arrayAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1, name);
-        listView.setAdapter(arrayAdapter);
+
 
         // Set up ImageSlider
         ArrayList<SlideModel> imageList = new ArrayList<>();
