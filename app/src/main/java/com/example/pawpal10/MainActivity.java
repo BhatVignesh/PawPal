@@ -63,11 +63,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         }
-//        listView = view.findViewById(R.id.listview); // Corrected ID here
-//        arrayAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1, name);
-//        listView.setAdapter(arrayAdapter);
 
-        // Bottom navigation item selection listener
         bottomNavigationView.setOnItemSelectedListener(new BottomNavigationView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -90,32 +86,6 @@ public class MainActivity extends AppCompatActivity {
     }
 }
 
-//Toolbar toolbar = findViewById(R.id.search_toolbar);
-//setSupportActionBar(toolbar);
-//
-//// Initialize the adapter
-//String[] name = {"Home", "Category", "Paw", "Medical", "Profile"};
-//arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, name);
-
-//MenuItem searchItem = menu.findItem(R.id.action_search);
-//SearchView searchView = (SearchView) searchItem.getActionView();
-//
-//// Configure SearchView
-//        searchView.setQueryHint("Type here to search");
-//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-//    @Override
-//    public boolean onQueryTextSubmit(String query) {
-//        // Handle search query submit
-//        return false;
-//    }
-//
-//    @Override
-//    public boolean onQueryTextChange(String newText) {
-//        // Filter data based on newText
-//        arrayAdapter.getFilter().filter(newText);
-//        return true; // Return true to indicate the query has been handled
-//    }
-//});
 
 
 
