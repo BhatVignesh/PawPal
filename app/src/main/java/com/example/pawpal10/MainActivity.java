@@ -72,7 +72,6 @@ public class MainActivity extends AppCompatActivity {
         fragmentMap.put(R.id.home_icon, new HomeFragment());
         fragmentMap.put(R.id.catagory_icon, new catagoryFragment());
         fragmentMap.put(R.id.paw_icon, new pawFragment());
-        fragmentMap.put(R.id.medical_icon, new checkupFragment());
         fragmentMap.put(R.id.profile_icon, new profileFragment());
 
         // Set initial fragment
