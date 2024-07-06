@@ -45,4 +45,7 @@
     <string name="pet_leash">Pet Leash</string>
     <string name="item_6">Item 6</string>
     <string name="dog_bone">Dog Bone</string>
+    <string name="product_image">product_image</string>
+    <string name="item_image">Product Image</string>
+    <string name="review_count">%1$d reviews</string>
 </resources>
