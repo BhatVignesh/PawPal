@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
@@ -40,12 +39,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         initializeFirebaseAuth();
+        initializeSearchView();  // Initialize SearchView first
         initializeBottomNavigationView();
         initializeFragments();
         checkUserAuthentication();
-
-        initializeSearchView();
-
     }
 
     private void initializeFirebaseAuth() {
@@ -152,7 +149,12 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frameLayout, fragment);
         fragmentTransaction.commit();
+
+        // Handle SearchView visibility
+        if (fragment instanceof profileFragment) {
+            searchView.setVisibility(View.GONE);
+        } else {
+            searchView.setVisibility(View.VISIBLE);
+        }
     }
-
-
 }
