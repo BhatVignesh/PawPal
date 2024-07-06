@@ -1,0 +1,46 @@
+<!-- trainee_item.xml -->
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <ImageView
+            android:id="@+id/imageTrainee"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/person1"
+            android:scaleType="centerCrop"/>
+
+        <TextView
+            android:id="@+id/textTraineeName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Trainee Name"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp"/>
+
+        <TextView
+            android:id="@+id/textTraineeAbstract"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Abstract Details (Years of Experience, Skills)"
+            android:textSize="14sp"
+            android:layout_marginTop="4dp"/>
+
+        <Button
+            android:id="@+id/buttonViewMore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="View More"
+            android:layout_marginTop="8dp"/>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
