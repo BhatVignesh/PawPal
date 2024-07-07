@@ -28,7 +28,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
-                    android:background="@drawable/category_background"
+                    android:background="#458AAC"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
                     android:padding="8dp">
@@ -38,8 +38,9 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center_vertical"
+                        android:textColor="@color/text_shadow_white"
                         android:text="Dog Food"
-                        android:textSize="14sp"
+                        android:textSize="20sp"
                         android:textStyle="bold" />
 
                     <ImageView
@@ -56,7 +57,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
-                    android:background="@drawable/category_background"
+                    android:background="#458AAC"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
                     android:padding="8dp">
@@ -67,8 +68,10 @@
                         android:layout_weight="1"
                         android:gravity="center_vertical"
                         android:text="Cat Food"
-                        android:textSize="14sp"
+                        android:textColor="@color/text_shadow_white"
+                        android:textSize="20sp"
                         android:textStyle="bold" />
+
 
                     <ImageView
                         android:layout_width="80dp"
@@ -85,7 +88,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
-                    android:background="@drawable/category_background"
+                    android:background="#458AAC"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
                     android:padding="8dp">
@@ -96,7 +99,8 @@
                         android:layout_weight="1"
                         android:gravity="center_vertical"
                         android:text="Pharmacy"
-                        android:textSize="14sp"
+                        android:textColor="@color/text_shadow_white"
+                        android:textSize="20sp"
                         android:textStyle="bold" />
 
                     <ImageView
@@ -114,7 +118,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
-                    android:background="@drawable/category_background"
+                    android:background="#458AAC"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
                     android:padding="8dp">
@@ -125,7 +129,8 @@
                         android:layout_weight="1"
                         android:gravity="center_vertical"
                         android:text="Litters and Supplies"
-                        android:textSize="14sp"
+                        android:textColor="@color/text_shadow_white"
+                        android:textSize="20sp"
                         android:textStyle="bold" />
 
                     <ImageView
@@ -143,7 +148,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
-                    android:background="@drawable/category_background"
+                    android:background="#458AAC"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
                     android:padding="8dp">
@@ -154,7 +159,8 @@
                         android:layout_weight="1"
                         android:gravity="center_vertical"
                         android:text="Grooming"
-                        android:textSize="14sp"
+                        android:textColor="@color/text_shadow_white"
+                        android:textSize="20sp"
                         android:textStyle="bold" />
 
                     <ImageView
@@ -172,7 +178,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
-                    android:background="@drawable/category_background"
+                    android:background="#458AAC"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
                     android:padding="8dp">
@@ -183,7 +189,8 @@
                         android:layout_weight="1"
                         android:gravity="center_vertical"
                         android:text="Toys"
-                        android:textSize="14sp"
+                        android:textColor="@color/text_shadow_white"
+                        android:textSize="20sp"
                         android:textStyle="bold" />
 
                     <ImageView
