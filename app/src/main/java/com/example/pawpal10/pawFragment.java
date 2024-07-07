@@ -37,9 +37,26 @@ public class pawFragment extends Fragment {
     private void prepareTraineeData() {
         if (traineeList.isEmpty()) {
             // Populate traineeList with dummy data (replace with your actual data)
-            traineeList.add(new Trainee("Mike", "Lorem ipsum...", R.drawable.person1));
-            traineeList.add(new Trainee("Suzan", "Lorem ipsum...", R.drawable.person2));
-            traineeList.add(new Trainee("Josh", "Lorem ipsum...", R.drawable.person3));
+            traineeList.add(new Trainee(
+                    "John Doe",
+                    "John Doe is a passionate animal lover with over 5 years of experience in dog training and pet care. He specializes in positive reinforcement techniques and has worked with various breeds to improve behavior and obedience.",
+                    R.drawable.person1
+            ));
+
+            // Trainee 3
+            traineeList.add(new Trainee(
+                    "Suzan Johnson",
+                    "Suzan Johnson is a certified dog trainer with a passion for canine behavior and rehabilitation. She specializes in fear and aggression management, using positive reinforcement techniques to build trust and confidence in her clients' pets.",
+                    R.drawable.person2
+            ));
+
+            // Trainee 4
+            traineeList.add(new Trainee(
+                    "Josh Thompson",
+                    "Josh Thompson is an animal behaviorist known for his work with rescue animals. He focuses on rehabilitation and socialization, helping traumatized pets integrate into loving homes through patient training and care.",
+                    R.drawable.person3
+            ));
+
             // Add more trainees as needed
             adapter.notifyDataSetChanged();
         }
