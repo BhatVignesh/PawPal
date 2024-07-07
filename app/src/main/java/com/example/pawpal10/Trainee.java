@@ -22,5 +22,10 @@ public class Trainee {
     public int getProfilePic() {
         return profilePic;
     }
+
+    // Method to get full abstract details
+    public String getFullAbstractDetails() {
+        return abstractDetails;
+    }
 }
 
