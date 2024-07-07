@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseUser user;
     private BottomNavigationView bottomNavigationView;
     private Map<Integer, Fragment> fragmentMap;
+    private Map<String, Fragment> searchFragmentMap;
     private ListView listView;
     private ArrayAdapter<String> arrayAdapter;
     private SearchView searchView;
@@ -71,6 +72,13 @@ public class MainActivity extends AppCompatActivity {
         fragmentMap.put(R.id.paw_icon, new pawFragment());
         fragmentMap.put(R.id.profile_icon, new profileFragment());
 
+        // Initialize searchFragmentMap for search view items
+        searchFragmentMap = new HashMap<>();
+        searchFragmentMap.put("Home", new HomeFragment());
+        searchFragmentMap.put("Category", new catagoryFragment());
+        searchFragmentMap.put("Paw", new pawFragment());
+        searchFragmentMap.put("Profile", new profileFragment());
+
         // Set initial fragment
         replaceFragment(new HomeFragment());
     }
@@ -97,7 +105,6 @@ public class MainActivity extends AppCompatActivity {
         arrayList.add("Home");
         arrayList.add("Category");
         arrayList.add("Paw");
-        arrayList.add("Medical");
         arrayList.add("Profile");
 
         arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, arrayList);
@@ -140,6 +147,18 @@ public class MainActivity extends AppCompatActivity {
             public boolean onClose() {
                 listView.setVisibility(View.GONE);
                 return false;
+            }
+        });
+
+        // Handle clicks on ListView items
+        listView.setOnItemClickListener((parent, view, position, id) -> {
+            String selectedItem = arrayAdapter.getItem(position);
+            Fragment selectedFragment = searchFragmentMap.get(selectedItem);
+            if (selectedFragment != null) {
+                replaceFragment(selectedFragment);
+                searchView.setQuery("", false);
+                searchView.clearFocus();
+                listView.setVisibility(View.GONE);
             }
         });
     }

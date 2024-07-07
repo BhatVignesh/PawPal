@@ -37,9 +37,9 @@ public class pawFragment extends Fragment {
     private void prepareTraineeData() {
         if (traineeList.isEmpty()) {
             // Populate traineeList with dummy data (replace with your actual data)
-            traineeList.add(new Trainee("Mukesh Gutka", "Lorem ipsum...", R.drawable.person1));
-            traineeList.add(new Trainee("Saritha", "Lorem ipsum...", R.drawable.person2));
-            traineeList.add(new Trainee("KVN", "Lorem ipsum...", R.drawable.person3));
+            traineeList.add(new Trainee("Mike", "Lorem ipsum...", R.drawable.person1));
+            traineeList.add(new Trainee("Suzan", "Lorem ipsum...", R.drawable.person2));
+            traineeList.add(new Trainee("Josh", "Lorem ipsum...", R.drawable.person3));
             // Add more trainees as needed
             adapter.notifyDataSetChanged();
         }
