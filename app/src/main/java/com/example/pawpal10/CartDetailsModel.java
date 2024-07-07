@@ -3,16 +3,11 @@ package com.example.pawpal10;
 public class CartDetailsModel {
 
     String product_name;
-    String product_Id;
-    int product_price;
+    Long product_price;
     int quantity;
-    public CartDetailsModel(){
 
-    }
-
-    public CartDetailsModel(String product_name, String product_Id, int product_price, int quantity) {
+    public CartDetailsModel(String product_name, Long product_price, int quantity) {
         this.product_name = product_name;
-        this.product_Id = product_Id;
         this.product_price = product_price;
         this.quantity = quantity;
     }
@@ -25,19 +20,11 @@ public class CartDetailsModel {
         this.product_name = product_name;
     }
 
-    public String getProduct_Id() {
-        return product_Id;
-    }
-
-    public void setProduct_Id(String product_Id) {
-        this.product_Id = product_Id;
-    }
-
-    public int getProduct_price() {
+    public Long getProduct_price() {
         return product_price;
     }
 
-    public void setProduct_price(int product_price) {
+    public void setProduct_price(Long product_price) {
         this.product_price = product_price;
     }
 

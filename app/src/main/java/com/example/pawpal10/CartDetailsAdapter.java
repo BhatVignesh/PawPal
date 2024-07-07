@@ -7,51 +7,53 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
 public class CartDetailsAdapter extends RecyclerView.Adapter<CartDetailsAdapter.ViewHolder> {
 
-    Context context ;
-    List<CartDetailsModel> cartDetailsModelList;
+    private Context context;
+    private List<CartDetailsModel> cartDetailsModelList;
 
-    public CartDetailsAdapter(FragmentActivity activity, List<CartDetailsModel> cartModelList) {
+    public CartDetailsAdapter(Context context, List<CartDetailsModel> cartModelList) {
+        this.context = context;
+        this.cartDetailsModelList = cartModelList;
     }
-
 
     @NonNull
     @Override
     public CartDetailsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.cart_item,parent,false));
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cart_item, parent, false);
+        return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull CartDetailsAdapter.ViewHolder holder, int position) {
-
-        holder.name.setText(cartDetailsModelList.get(position).getProduct_name());
-        holder.price.setText(String.valueOf(cartDetailsModelList.get(position).getProduct_price()));
-        holder.quantity.setText(String.valueOf(cartDetailsModelList.get(position).getQuantity()));
-
-
+        CartDetailsModel model = cartDetailsModelList.get(position);
+        holder.name.setText(model.getProduct_name());
+        holder.price.setText(String.valueOf(model.getProduct_price()));
+        holder.quantity.setText(String.valueOf(model.getQuantity()));
     }
 
     @Override
     public int getItemCount() {
-        return cartDetailsModelList.size();
+        if (cartDetailsModelList != null) {
+            return cartDetailsModelList.size();
+        } else {
+            return 0;
+        }
     }
-    public class ViewHolder extends RecyclerView.ViewHolder{
 
-        TextView name,price,quantity;
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        TextView name, price, quantity;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-
-            name=itemView.findViewById(R.id.product_name_value);
-            price=itemView.findViewById(R.id.product_price_value);
-            quantity=itemView.findViewById(R.id.product_quantity_value);
-
+            name = itemView.findViewById(R.id.product_name_value);
+            price = itemView.findViewById(R.id.product_price_value);
+            quantity = itemView.findViewById(R.id.product_quantity_value);
         }
     }
 }
+

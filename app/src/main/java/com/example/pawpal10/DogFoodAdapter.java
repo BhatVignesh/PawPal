@@ -16,10 +16,19 @@ public class DogFoodAdapter extends RecyclerView.Adapter<DogFoodAdapter.ViewHold
 
     private Context context;
     private List<DogFoodItem> dogFoodItems;
+    private OnItemClickListener listener;
+
+    public interface OnItemClickListener {
+        void onAddToCartClick(DogFoodItem item);
+    }
 
     public DogFoodAdapter(Context context, List<DogFoodItem> dogFoodItems) {
         this.context = context;
         this.dogFoodItems = dogFoodItems;
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
     }
 
     @NonNull
@@ -38,7 +47,9 @@ public class DogFoodAdapter extends RecyclerView.Adapter<DogFoodAdapter.ViewHold
         holder.productRating.setRating(item.getRating());
         holder.reviewCount.setText(context.getString(R.string.review_count, item.getReviewCount()));
         holder.addToCartButton.setOnClickListener(view -> {
-            // Handle add to cart logic
+            if (listener != null) {
+                listener.onAddToCartClick(item);
+            }
         });
     }
 
@@ -66,4 +77,5 @@ public class DogFoodAdapter extends RecyclerView.Adapter<DogFoodAdapter.ViewHold
         }
     }
 }
+
 
