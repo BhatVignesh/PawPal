@@ -1,7 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@drawable/category_background"
+    android:background="#458AAC"
     android:orientation="vertical"
     android:padding="8dp">
 
@@ -34,6 +34,7 @@
         android:layout_gravity="center"
         android:layout_marginTop="4dp"
         android:isIndicator="true"
+        android:outlineAmbientShadowColor="#DDEFF3"
         android:numStars="5"
         android:scaleX="0.75"
         android:scaleY="0.75"
@@ -51,6 +52,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:backgroundTint="#DDEFF3"
+        android:textColor="#458AAC"
         android:text="@string/add_to_cart" />
 </LinearLayout>
 
