@@ -10,6 +10,9 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
+
 import java.util.List;
 
 public class DogFoodAdapter extends RecyclerView.Adapter<DogFoodAdapter.ViewHolder> {
@@ -41,16 +44,19 @@ public class DogFoodAdapter extends RecyclerView.Adapter<DogFoodAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         DogFoodItem item = dogFoodItems.get(position);
-        holder.productImage.setImageResource(item.getImageResource());
         holder.productName.setText(item.getName());
         holder.productPrice.setText(item.getPrice());
         holder.productRating.setRating(item.getRating());
         holder.reviewCount.setText(context.getString(R.string.review_count, item.getReviewCount()));
+        Glide.with(context)
+                .load(item.getImageUrl())
+                .into(holder.productImage);
         holder.addToCartButton.setOnClickListener(view -> {
             if (listener != null) {
                 listener.onAddToCartClick(item);
             }
         });
+
     }
 
     @Override

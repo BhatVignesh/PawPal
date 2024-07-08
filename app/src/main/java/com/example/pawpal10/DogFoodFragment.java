@@ -10,11 +10,16 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,11 +27,12 @@ import java.util.Map;
 
 public class DogFoodFragment extends Fragment implements DogFoodAdapter.OnItemClickListener {
 
+    FirebaseAuth auth;
+    FirebaseUser currentUser;
     private RecyclerView recyclerView;
     private DogFoodAdapter adapter;
     private List<DogFoodItem> dogFoodItemList;
     private FirebaseFirestore db;
-    private FirebaseUser currentUser;
 
     @Nullable
     @Override
@@ -40,20 +46,47 @@ public class DogFoodFragment extends Fragment implements DogFoodAdapter.OnItemCl
         recyclerView.addItemDecoration(new SpacingItemDecoration(spacingInPixels));
 
         dogFoodItemList = new ArrayList<>();
-        dogFoodItemList.add(new DogFoodItem(R.drawable.popitem1, "Pedigree", "$19.99", 4.5f, 120));
-        dogFoodItemList.add(new DogFoodItem(R.drawable.popitem2, "DesiNayiFood", "$29.99", 4.2f, 80));
-        dogFoodItemList.add(new DogFoodItem(R.drawable.popitem3, "VegDogFood", "$33.99", 4.6f, 50));
-        dogFoodItemList.add(new DogFoodItem(R.drawable.popitem4, "VeganDogFood", "$44.99", 4.4f, 60));
-        dogFoodItemList.add(new DogFoodItem(R.drawable.popitem5, "Wiskers", "$55.99", 4.2f, 70));
-        dogFoodItemList.add(new DogFoodItem(R.drawable.popitem6, "Bone", "$66.99", 4.0f, 90));
-
         adapter = new DogFoodAdapter(getContext(), dogFoodItemList);
         adapter.setOnItemClickListener(this);
         recyclerView.setAdapter(adapter);
 
         // Initialize Firebase Firestore and get current user
         db = FirebaseFirestore.getInstance();
+        auth = FirebaseAuth.getInstance();
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        db.collection("product").document("dogFood").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Map<String, Object> dogFoodMap = (Map<String, Object>) document.getData();
+                        for (String key : dogFoodMap.keySet()) {
+                            Map<String, Object> product = (Map<String, Object>) dogFoodMap.get(key);
+
+                            String description = (String) product.get("description");
+                            String name = (String) product.get("name");
+                            String price = (String) product.get("price");
+                            String productType = (String) product.get("product_type");
+                            double rating = (Double) product.get("rating");
+                            int reviewCount = ((Long) product.get("reviewCount")).intValue();
+                            int pid = Integer.parseInt(key);
+                            String imageUrl = (String) product.get("imageUrl"); // Retrieve image URL
+
+                            DogFoodItem item = new DogFoodItem(imageUrl, name, price, (float) rating, reviewCount, pid, productType, description);
+                            dogFoodItemList.add(item);
+                        }
+                        // Notify the adapter that data has changed
+                        adapter.notifyDataSetChanged();
+                    } else {
+                        Toast.makeText(getContext(), "No such document", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(getContext(), "Error getting document.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
         return view;
     }
@@ -64,11 +97,6 @@ public class DogFoodFragment extends Fragment implements DogFoodAdapter.OnItemCl
     }
 
     private void addToCart(DogFoodItem item) {
-        if (currentUser == null) {
-            Toast.makeText(getContext(), "User not signed in", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
         db.collection("cartInfo").document(currentUser.getUid())
                 .collection("products")
                 .whereEqualTo("Product_name", item.getName())
