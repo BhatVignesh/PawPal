@@ -72,9 +72,10 @@ public class DogFoodFragment extends Fragment implements DogFoodAdapter.OnItemCl
                             double rating = (Double) product.get("rating");
                             int reviewCount = ((Long) product.get("reviewCount")).intValue();
                             int pid = Integer.parseInt(key);
-                            String imageUrl = (String) product.get("imageUrl"); // Retrieve image URL
+                            String imageUrl = (String) product.get("imageUrl");
+                            String size=(String) product.get("size");
 
-                            DogFoodItem item = new DogFoodItem(imageUrl, name, price, (float) rating, reviewCount, pid, productType, description);
+                            DogFoodItem item = new DogFoodItem(imageUrl, name, price, (float) rating, reviewCount, pid, productType, description,size);
                             dogFoodItemList.add(item);
                         }
                         // Notify the adapter that data has changed
@@ -114,8 +115,10 @@ public class DogFoodFragment extends Fragment implements DogFoodAdapter.OnItemCl
                             // If product does not exist, add a new document
                             Map<String, Object> cartItem = new HashMap<>();
                             cartItem.put("Product_name", item.getName());
-                            cartItem.put("Product_price", Double.parseDouble(item.getPrice().replace("$", ""))); // Parse price to double
+                            cartItem.put("Product_price", Double.parseDouble(item.getPrice())); // Parse price to double
                             cartItem.put("quantity", 1);
+                            cartItem.put("imageUrl",item.getImageUrl());
+                            cartItem.put("size",item.getSize());
 
                             db.collection("cartInfo").document(currentUser.getUid())
                                     .collection("products")

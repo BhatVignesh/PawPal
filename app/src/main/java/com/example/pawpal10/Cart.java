@@ -11,21 +11,28 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class Cart extends Fragment {
+public class Cart extends Fragment implements CartDetailsAdapter.OnItemClickListener {
 
     FirebaseFirestore db;
     FirebaseAuth auth;
+    FirebaseUser currentUser;
     RecyclerView recyclerView;
     CartDetailsAdapter cartDetailsAdapter;
     List<CartDetailsModel> cartModelList;
@@ -43,9 +50,11 @@ public class Cart extends Fragment {
         auth = FirebaseAuth.getInstance();
         recyclerView = root.findViewById(R.id.recyclerViewCart);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
         cartModelList = new ArrayList<>();
         cartDetailsAdapter = new CartDetailsAdapter(getActivity(), cartModelList);
+        cartDetailsAdapter.setOnItemClickListener(this); // Set listener
         recyclerView.setAdapter(cartDetailsAdapter);
 
         // Fetch cart data from Firestore
@@ -66,8 +75,10 @@ public class Cart extends Fragment {
                                 // Retrieve quantity as Long and convert to int
                                 Long quantityLong = document.getLong("quantity");
                                 int quantity = (quantityLong != null) ? quantityLong.intValue() : 0;
+                                String imageUrl = (String) document.get("imageUrl");
+                                String size = (String) document.get("size");
 
-                                CartDetailsModel cartDetailsModel = new CartDetailsModel(productName, productPrice, quantity);
+                                CartDetailsModel cartDetailsModel = new CartDetailsModel(productName, productPrice, quantity, imageUrl, size);
                                 cartModelList.add(cartDetailsModel);
                             }
                             cartDetailsAdapter.notifyDataSetChanged(); // Notify adapter of data change
@@ -77,8 +88,73 @@ public class Cart extends Fragment {
                     }
                 });
 
-
-
         return root;
+    }
+
+    @Override
+    public void onAdd1ToCartClick(CartDetailsModel item) {
+        // Handle add1 button click logic here
+        db.collection("cartInfo").document(currentUser.getUid())
+                .collection("products")
+                .whereEqualTo("Product_name", item.getProduct_name())
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        QuerySnapshot querySnapshot = task.getResult();
+                        if (querySnapshot != null && !querySnapshot.isEmpty()) {
+                            // If product exists, increment the quantity
+                            DocumentReference docRef = querySnapshot.getDocuments().get(0).getReference();
+                            docRef.update("quantity", querySnapshot.getDocuments().get(0).getLong("quantity") + 1)
+                                    .addOnSuccessListener(aVoid -> Toast.makeText(getContext(), "Quantity updated", Toast.LENGTH_SHORT).show())
+                                    .addOnFailureListener(e -> Toast.makeText(getContext(), "Failed to update quantity", Toast.LENGTH_SHORT).show());
+                            item.setQuantity(item.getQuantity() + 1);
+                            cartDetailsAdapter.notifyDataSetChanged();
+                        }
+                    } else {
+                        Toast.makeText(getContext(), "Error checking cart", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    @Override
+    public void onDelete1FromCartClick(CartDetailsModel item) {
+        // Handle delete1 button click logic here
+        db.collection("cartInfo").document(currentUser.getUid())
+                .collection("products")
+                .whereEqualTo("Product_name", item.getProduct_name())
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        QuerySnapshot querySnapshot = task.getResult();
+                        if (querySnapshot != null && !querySnapshot.isEmpty()) {
+                            DocumentSnapshot document = querySnapshot.getDocuments().get(0);
+                            long currentQuantity = document.getLong("quantity");
+
+                            // Update quantity or delete item based on current quantity
+                            if (currentQuantity > 1) {
+                                // If quantity is more than 1, decrement the quantity
+                                document.getReference().update("quantity", currentQuantity - 1)
+                                        .addOnSuccessListener(aVoid -> Toast.makeText(getContext(), "Quantity updated", Toast.LENGTH_SHORT).show())
+                                        .addOnFailureListener(e -> Toast.makeText(getContext(), "Failed to update quantity", Toast.LENGTH_SHORT).show());
+                                item.setQuantity(item.getQuantity() - 1);
+                                cartDetailsAdapter.notifyDataSetChanged();
+                            } else {
+                                // If quantity is 1 (or 0), delete the item from Firestore
+                                document.getReference().delete()
+                                        .addOnSuccessListener(aVoid -> {
+                                            Toast.makeText(getContext(), "Item removed from cart", Toast.LENGTH_SHORT).show();
+                                            cartModelList.remove(item); // Remove from local list
+                                            cartDetailsAdapter.notifyDataSetChanged(); // Refresh RecyclerView
+                                        })
+                                        .addOnFailureListener(e -> Toast.makeText(getContext(), "Failed to remove item", Toast.LENGTH_SHORT).show());
+                            }
+                        } else {
+                            // Handle case where item not found (should not occur in normal flow)
+                            Toast.makeText(getContext(), "Item not found in cart", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Toast.makeText(getContext(), "Error checking cart", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 }
