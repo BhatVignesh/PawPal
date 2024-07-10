@@ -13,7 +13,7 @@
 
         <androidx.appcompat.widget.SearchView
             android:id="@+id/searchView"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:queryHint="Search"
             android:iconifiedByDefault="false"
@@ -23,8 +23,20 @@
             android:layout_margin="16dp"
             android:background="@drawable/search_view_background"
             android:padding="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/cartButton"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/cartButton"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="16dp"
+            android:contentDescription="@string/cart"
+            android:padding="1dp"
+            android:src="@drawable/shopping_cart"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ListView
@@ -63,3 +75,4 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </RelativeLayout>
+

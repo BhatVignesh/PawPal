@@ -10,8 +10,9 @@ public class DogFoodItem {
     private String price;
     private float rating;
     private int reviewCount;
+    String size;
 
-    public DogFoodItem(String imageUrl, String name, String price, float rating, int reviewCount, int pid, String product_type, String description) {
+    public DogFoodItem(String imageUrl, String name, String price, float rating, int reviewCount, int pid, String product_type, String description,String size) {
         this.imageUrl = imageUrl;
         this.name = name;
         this.price = price;
@@ -20,10 +21,19 @@ public class DogFoodItem {
         this.pid = pid;
         this.product_type = product_type;
         this.description = description;
+        this.size=size;
     }
 
     public int getPid() {
         return pid;
+    }
+
+    public String getSize() {
+        return size;
+    }
+
+    public void setSize(String size) {
+        this.size = size;
     }
 
     public void setPid(int pid) {

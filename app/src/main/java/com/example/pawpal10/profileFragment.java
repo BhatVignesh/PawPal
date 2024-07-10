@@ -32,7 +32,7 @@ public class profileFragment extends Fragment {
 
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
-        db = FirebaseFirestore.getInstance();
+        db=FirebaseFirestore.getInstance();
 
         profileTextView = view.findViewById(R.id.profileTextView);
         logoutButton = view.findViewById(R.id.logoutButton);
@@ -83,7 +83,6 @@ public class profileFragment extends Fragment {
 
         return view;
     }
-
     private void navigateToFragment(Fragment fragment) {
         FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
         transaction.replace(R.id.frameLayout, fragment);
@@ -91,3 +90,6 @@ public class profileFragment extends Fragment {
         transaction.commit();
     }
 }
+
+
+

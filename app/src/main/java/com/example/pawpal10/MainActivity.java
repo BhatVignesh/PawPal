@@ -4,7 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
@@ -33,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayAdapter<String> arrayAdapter;
     private SearchView searchView;
     private ArrayList<String> arrayList;
+    private ImageView cartButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
         initializeSearchView();  // Initialize SearchView first
         initializeBottomNavigationView();
         initializeFragments();
+        initializeCartButton();
         checkUserAuthentication();
     }
 
@@ -163,6 +168,20 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void initializeCartButton() {
+        cartButton = findViewById(R.id.cartButton);
+        cartButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Load animation
+                Animation scaleAnimation = AnimationUtils.loadAnimation(MainActivity.this, R.anim.click_scale);
+                // Start animation
+                v.startAnimation(scaleAnimation);
+                replaceFragment(new Cart());
+            }
+        });
+    }
+
     private void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -177,3 +196,4 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 }
+

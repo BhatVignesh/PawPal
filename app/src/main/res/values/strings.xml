@@ -55,6 +55,21 @@
     <string name="price">price:</string>
     <string name="view_cart">view cart</string>
     <string name="Mike">Sophia Granger</string>
+
+        <!-- Other strings -->
+    <string-array name="time_slots_array">
+            <item>10:00 AM - 11:00 AM</item>
+            <item>11:00 AM - 12:00 PM</item>
+            <item>12:00 PM - 01:00 PM</item>
+            <item>01:00 PM - 02:00 PM</item>
+            <item>02:00 PM - 03:00 PM</item>
+            <item>03:00 PM - 04:00 PM</item>
+            <item>04:00 PM - 05:00 PM</item>
+    </string-array>
+
+
+    <string name="cart">Cart</string>
+    <string name="rupee">₹</string>
     <string name="logo_content_description">App logo</string>
     <string name="amount_hint">Enter amount</string>
     <string name="googlepay_button_content_description">Google Pay button</string>
