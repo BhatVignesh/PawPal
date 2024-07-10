@@ -108,9 +108,14 @@ public class CatFoodFragment extends Fragment implements DogFoodAdapter.OnItemCl
                         if (querySnapshot != null && !querySnapshot.isEmpty()) {
                             // If product exists, increment the quantity
                             DocumentReference docRef = querySnapshot.getDocuments().get(0).getReference();
-                            docRef.update("quantity", querySnapshot.getDocuments().get(0).getLong("quantity") + 1)
-                                    .addOnSuccessListener(aVoid -> Toast.makeText(getContext(), "Quantity updated", Toast.LENGTH_SHORT).show())
-                                    .addOnFailureListener(e -> Toast.makeText(getContext(), "Failed to update quantity", Toast.LENGTH_SHORT).show());
+                            long currentQuantity = querySnapshot.getDocuments().get(0).getLong("quantity");
+                            long newQuantity = currentQuantity + 1;
+                            long productPrice = querySnapshot.getDocuments().get(0).getLong("Product_price");
+                            long newTotalPrice = newQuantity * productPrice;
+
+                            docRef.update("quantity", newQuantity, "Total_price", newTotalPrice)
+                                    .addOnSuccessListener(aVoid -> Toast.makeText(getContext(), "Quantity and total price updated", Toast.LENGTH_SHORT).show())
+                                    .addOnFailureListener(e -> Toast.makeText(getContext(), "Failed to update quantity and total price", Toast.LENGTH_SHORT).show());
                         } else {
                             // If product does not exist, add a new document
                             Map<String, Object> cartItem = new HashMap<>();
