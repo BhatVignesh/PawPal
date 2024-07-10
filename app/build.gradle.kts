@@ -1,4 +1,3 @@
-
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.google.gms.google.services)
@@ -27,6 +26,7 @@ android {
             )
         }
     }
+
     buildFeatures {
         viewBinding = true
     }
@@ -49,4 +49,6 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
     implementation("com.github.denzcoskun:ImageSlideshow:0.1.2") // Correct syntax for Kotlin DSL
+    implementation("com.google.android.gms:play-services-wallet:18.1.1")
+
 }

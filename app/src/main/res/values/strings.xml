@@ -55,4 +55,8 @@
     <string name="price">price:</string>
     <string name="view_cart">view cart</string>
     <string name="Mike">Sophia Granger</string>
+    <string name="logo_content_description">App logo</string>
+    <string name="amount_hint">Enter amount</string>
+    <string name="googlepay_button_content_description">Google Pay button</string>
+
 </resources>
