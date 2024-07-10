@@ -43,13 +43,20 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Hide app name (action bar title)
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+        }
+
+        // Initialize other components and functionality
         initializeFirebaseAuth();
-        initializeSearchView();  // Initialize SearchView first
+        initializeSearchView();
         initializeBottomNavigationView();
         initializeFragments();
         initializeCartButton();
         checkUserAuthentication();
     }
+
 
     private void initializeFirebaseAuth() {
         auth = FirebaseAuth.getInstance();
