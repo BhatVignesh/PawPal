@@ -20,11 +20,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 public class profileFragment extends Fragment {
 
     private FirebaseAuth auth;
-    FirebaseFirestore db;
+    private FirebaseFirestore db;
     private FirebaseUser user;
     private TextView profileTextView;
-    private Button logoutButton,viewCartButton;
-
+    private Button logoutButton, viewCartButton, payButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -33,11 +32,12 @@ public class profileFragment extends Fragment {
 
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
-        db=FirebaseFirestore.getInstance();
+        db = FirebaseFirestore.getInstance();
 
         profileTextView = view.findViewById(R.id.profileTextView);
         logoutButton = view.findViewById(R.id.logoutButton);
-        viewCartButton=view.findViewById(R.id.view_cart_button);
+        viewCartButton = view.findViewById(R.id.view_cart_button);
+        payButton = view.findViewById(R.id.payButton); // Assuming you have added a payButton in your layout XML
 
         if (user == null) {
             Intent intent = new Intent(getActivity(), Login.class);
@@ -64,16 +64,26 @@ public class profileFragment extends Fragment {
                     }
                 }
             });
+
             viewCartButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     navigateToFragment(new Cart());
                 }
             });
+
+            payButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getActivity(), PaymentActivity.class);
+                    startActivity(intent);
+                }
+            });
         }
 
         return view;
     }
+
     private void navigateToFragment(Fragment fragment) {
         FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
         transaction.replace(R.id.frameLayout, fragment);
@@ -81,6 +91,3 @@ public class profileFragment extends Fragment {
         transaction.commit();
     }
 }
-
-
-
