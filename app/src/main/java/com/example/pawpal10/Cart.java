@@ -94,7 +94,7 @@ public class Cart extends Fragment implements CartDetailsAdapter.OnItemClickList
                                     totalAmount += totalPrice;
                                 }
                             }
-                            totalAmountTextView.setText("Total Amount: $" + totalAmount);
+                            totalAmountTextView.setText("Total Amount: ₹" + totalAmount);
                             if (cartModelList.isEmpty()) {
                                 emptyCartTextView.setVisibility(View.VISIBLE);
                                 totalAmountTextView.setVisibility(View.GONE);
@@ -137,7 +137,7 @@ public class Cart extends Fragment implements CartDetailsAdapter.OnItemClickList
                             item.setQuantity((int) newQuantity);
                             item.setTotal_price(newTotalPrice);
                             totalAmount += productPrice; // Update total amount
-                            totalAmountTextView.setText("Total Amount: $" + totalAmount);
+                            totalAmountTextView.setText("Total Amount: ₹" + totalAmount);
                             cartDetailsAdapter.notifyDataSetChanged();
                             checkIfCartIsEmpty(); // Check if the cart is empty
                         }
@@ -175,7 +175,7 @@ public class Cart extends Fragment implements CartDetailsAdapter.OnItemClickList
                                 item.setQuantity((int) newQuantity);
                                 item.setTotal_price(newTotalPrice);
                                 totalAmount -= productPrice; // Update total amount
-                                totalAmountTextView.setText("Total Amount: $" + totalAmount);
+                                totalAmountTextView.setText("Total Amount: ₹" + totalAmount);
                                 cartDetailsAdapter.notifyDataSetChanged();
                                 checkIfCartIsEmpty(); // Check if the cart is empty
                             } else {
@@ -185,7 +185,7 @@ public class Cart extends Fragment implements CartDetailsAdapter.OnItemClickList
                                             Toast.makeText(getContext(), "Item removed from cart", Toast.LENGTH_SHORT).show();
                                             cartModelList.remove(item); // Remove from local list
                                             totalAmount -= productPrice; // Update total amount
-                                            totalAmountTextView.setText("Total Amount: $" + totalAmount);
+                                            totalAmountTextView.setText("Total Amount: ₹" + totalAmount);
                                             cartDetailsAdapter.notifyDataSetChanged(); // Refresh RecyclerView
                                             checkIfCartIsEmpty(); // Check if the cart is empty
                                         })

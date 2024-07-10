@@ -45,7 +45,7 @@ public class DogFoodAdapter extends RecyclerView.Adapter<DogFoodAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         DogFoodItem item = dogFoodItems.get(position);
         holder.productName.setText(item.getName());
-        holder.productPrice.setText(item.getPrice());
+        holder.productPrice.setText("₹"+item.getPrice());
         holder.productRating.setRating(item.getRating());
         holder.reviewCount.setText(context.getString(R.string.review_count, item.getReviewCount()));
         Glide.with(context)

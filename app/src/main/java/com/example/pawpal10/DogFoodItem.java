@@ -5,7 +5,7 @@ public class DogFoodItem {
     int pid;
     String product_type;
     String description;
-    private String imageUrl; // Add this field
+    private String imageUrl;
     private String name;
     private String price;
     private float rating;
