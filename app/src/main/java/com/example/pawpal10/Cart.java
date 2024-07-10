@@ -36,6 +36,9 @@ public class Cart extends Fragment implements CartDetailsAdapter.OnItemClickList
     RecyclerView recyclerView;
     CartDetailsAdapter cartDetailsAdapter;
     List<CartDetailsModel> cartModelList;
+    TextView totalAmountTextView;
+    TextView emptyCartTextView;
+    long totalAmount;
 
     public Cart() {
         // Required empty public constructor
@@ -52,6 +55,8 @@ public class Cart extends Fragment implements CartDetailsAdapter.OnItemClickList
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
+        totalAmountTextView = root.findViewById(R.id.totalAmountTextView);
+        emptyCartTextView = root.findViewById(R.id.emptyCartTextView);
         cartModelList = new ArrayList<>();
         cartDetailsAdapter = new CartDetailsAdapter(getActivity(), cartModelList);
         cartDetailsAdapter.setOnItemClickListener(this); // Set listener
@@ -66,6 +71,8 @@ public class Cart extends Fragment implements CartDetailsAdapter.OnItemClickList
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
+                            totalAmount = 0; // Reset total amount
+                            cartModelList.clear();
                             for (DocumentSnapshot document : task.getResult()) {
                                 String productName = document.getString("Product_name");
 
@@ -77,9 +84,23 @@ public class Cart extends Fragment implements CartDetailsAdapter.OnItemClickList
                                 int quantity = (quantityLong != null) ? quantityLong.intValue() : 0;
                                 String imageUrl = (String) document.get("imageUrl");
                                 String size = (String) document.get("size");
+                                Long totalPrice = document.getLong("Total_price");
 
-                                CartDetailsModel cartDetailsModel = new CartDetailsModel(productName, productPrice, quantity, imageUrl, size);
+                                CartDetailsModel cartDetailsModel = new CartDetailsModel(productName, productPrice, quantity, imageUrl, size, totalPrice);
                                 cartModelList.add(cartDetailsModel);
+
+                                // Add to total amount
+                                if (totalPrice != null) {
+                                    totalAmount += totalPrice;
+                                }
+                            }
+                            totalAmountTextView.setText("Total Amount: $" + totalAmount);
+                            if (cartModelList.isEmpty()) {
+                                emptyCartTextView.setVisibility(View.VISIBLE);
+                                totalAmountTextView.setVisibility(View.GONE);
+                            } else {
+                                emptyCartTextView.setVisibility(View.GONE);
+                                totalAmountTextView.setVisibility(View.VISIBLE);
                             }
                             cartDetailsAdapter.notifyDataSetChanged(); // Notify adapter of data change
                         } else {
@@ -102,13 +123,23 @@ public class Cart extends Fragment implements CartDetailsAdapter.OnItemClickList
                     if (task.isSuccessful()) {
                         QuerySnapshot querySnapshot = task.getResult();
                         if (querySnapshot != null && !querySnapshot.isEmpty()) {
-                            // If product exists, increment the quantity
+                            // If product exists, increment the quantity and update the total price
                             DocumentReference docRef = querySnapshot.getDocuments().get(0).getReference();
-                            docRef.update("quantity", querySnapshot.getDocuments().get(0).getLong("quantity") + 1)
-                                    .addOnSuccessListener(aVoid -> Toast.makeText(getContext(), "Quantity updated", Toast.LENGTH_SHORT).show())
-                                    .addOnFailureListener(e -> Toast.makeText(getContext(), "Failed to update quantity", Toast.LENGTH_SHORT).show());
-                            item.setQuantity(item.getQuantity() + 1);
+                            long currentQuantity = querySnapshot.getDocuments().get(0).getLong("quantity");
+                            long newQuantity = currentQuantity + 1;
+                            long productPrice = querySnapshot.getDocuments().get(0).getLong("Product_price");
+                            long newTotalPrice = newQuantity * productPrice;
+
+                            docRef.update("quantity", newQuantity, "Total_price", newTotalPrice)
+                                    .addOnSuccessListener(aVoid -> Toast.makeText(getContext(), "Quantity and total price updated", Toast.LENGTH_SHORT).show())
+                                    .addOnFailureListener(e -> Toast.makeText(getContext(), "Failed to update quantity and total price", Toast.LENGTH_SHORT).show());
+
+                            item.setQuantity((int) newQuantity);
+                            item.setTotal_price(newTotalPrice);
+                            totalAmount += productPrice; // Update total amount
+                            totalAmountTextView.setText("Total Amount: $" + totalAmount);
                             cartDetailsAdapter.notifyDataSetChanged();
+                            checkIfCartIsEmpty(); // Check if the cart is empty
                         }
                     } else {
                         Toast.makeText(getContext(), "Error checking cart", Toast.LENGTH_SHORT).show();
@@ -129,22 +160,34 @@ public class Cart extends Fragment implements CartDetailsAdapter.OnItemClickList
                         if (querySnapshot != null && !querySnapshot.isEmpty()) {
                             DocumentSnapshot document = querySnapshot.getDocuments().get(0);
                             long currentQuantity = document.getLong("quantity");
+                            long productPrice = document.getLong("Product_price");
 
                             // Update quantity or delete item based on current quantity
                             if (currentQuantity > 1) {
-                                // If quantity is more than 1, decrement the quantity
-                                document.getReference().update("quantity", currentQuantity - 1)
-                                        .addOnSuccessListener(aVoid -> Toast.makeText(getContext(), "Quantity updated", Toast.LENGTH_SHORT).show())
-                                        .addOnFailureListener(e -> Toast.makeText(getContext(), "Failed to update quantity", Toast.LENGTH_SHORT).show());
-                                item.setQuantity(item.getQuantity() - 1);
+                                // If quantity is more than 1, decrement the quantity and update the total price
+                                long newQuantity = currentQuantity - 1;
+                                long newTotalPrice = newQuantity * productPrice;
+
+                                document.getReference().update("quantity", newQuantity, "Total_price", newTotalPrice)
+                                        .addOnSuccessListener(aVoid -> Toast.makeText(getContext(), "Quantity and total price updated", Toast.LENGTH_SHORT).show())
+                                        .addOnFailureListener(e -> Toast.makeText(getContext(), "Failed to update quantity and total price", Toast.LENGTH_SHORT).show());
+
+                                item.setQuantity((int) newQuantity);
+                                item.setTotal_price(newTotalPrice);
+                                totalAmount -= productPrice; // Update total amount
+                                totalAmountTextView.setText("Total Amount: $" + totalAmount);
                                 cartDetailsAdapter.notifyDataSetChanged();
+                                checkIfCartIsEmpty(); // Check if the cart is empty
                             } else {
                                 // If quantity is 1 (or 0), delete the item from Firestore
                                 document.getReference().delete()
                                         .addOnSuccessListener(aVoid -> {
                                             Toast.makeText(getContext(), "Item removed from cart", Toast.LENGTH_SHORT).show();
                                             cartModelList.remove(item); // Remove from local list
+                                            totalAmount -= productPrice; // Update total amount
+                                            totalAmountTextView.setText("Total Amount: $" + totalAmount);
                                             cartDetailsAdapter.notifyDataSetChanged(); // Refresh RecyclerView
+                                            checkIfCartIsEmpty(); // Check if the cart is empty
                                         })
                                         .addOnFailureListener(e -> Toast.makeText(getContext(), "Failed to remove item", Toast.LENGTH_SHORT).show());
                             }
@@ -157,4 +200,15 @@ public class Cart extends Fragment implements CartDetailsAdapter.OnItemClickList
                     }
                 });
     }
+
+    private void checkIfCartIsEmpty() {
+        if (cartModelList.isEmpty()) {
+            emptyCartTextView.setVisibility(View.VISIBLE);
+            totalAmountTextView.setVisibility(View.GONE);
+        } else {
+            emptyCartTextView.setVisibility(View.GONE);
+            totalAmountTextView.setVisibility(View.VISIBLE);
+        }
+    }
 }
+

@@ -6,13 +6,23 @@ public class CartDetailsModel {
     int quantity;
     String imageUrl;
     String size;
+    Long total_price;
 
-    public CartDetailsModel(String product_name, Long product_price, int quantity,String imageUrl,String size) {
+    public CartDetailsModel(String product_name, Long product_price, int quantity,String imageUrl,String size,Long total_price) {
         this.product_name = product_name;
         this.product_price = product_price;
         this.quantity = quantity;
         this.imageUrl=imageUrl;
         this.size=size;
+        this.total_price=total_price;
+    }
+
+    public Long getTotal_price() {
+        return total_price;
+    }
+
+    public void setTotal_price(Long total_price) {
+        this.total_price = total_price;
     }
 
     public String getImageUrl() {

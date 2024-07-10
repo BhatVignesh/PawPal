@@ -119,6 +119,7 @@ public class DogFoodFragment extends Fragment implements DogFoodAdapter.OnItemCl
                             cartItem.put("quantity", 1);
                             cartItem.put("imageUrl",item.getImageUrl());
                             cartItem.put("size",item.getSize());
+                            cartItem.put("Total_price",Double.parseDouble(item.getPrice()));
 
                             db.collection("cartInfo").document(currentUser.getUid())
                                     .collection("products")

@@ -23,7 +23,7 @@ public class profileFragment extends Fragment {
     FirebaseFirestore db;
     private FirebaseUser user;
     private TextView profileTextView;
-    private Button logoutButton,viewCartButton;
+    private Button logoutButton;
 
 
     @Override
@@ -37,7 +37,6 @@ public class profileFragment extends Fragment {
 
         profileTextView = view.findViewById(R.id.profileTextView);
         logoutButton = view.findViewById(R.id.logoutButton);
-        viewCartButton=view.findViewById(R.id.view_cart_button);
 
         if (user == null) {
             Intent intent = new Intent(getActivity(), Login.class);
@@ -64,12 +63,7 @@ public class profileFragment extends Fragment {
                     }
                 }
             });
-            viewCartButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    navigateToFragment(new Cart());
-                }
-            });
+
         }
 
         return view;

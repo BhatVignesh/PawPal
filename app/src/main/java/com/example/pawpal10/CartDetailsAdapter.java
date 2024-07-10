@@ -44,7 +44,7 @@ public class CartDetailsAdapter extends RecyclerView.Adapter<CartDetailsAdapter.
     public void onBindViewHolder(@NonNull CartDetailsAdapter.ViewHolder holder, int position) {
         CartDetailsModel model = cartDetailsModelList.get(position);
         holder.name.setText(model.getProduct_name());
-        holder.price.setText(String.valueOf(model.getProduct_price()));
+        holder.price.setText(String.valueOf(model.getTotal_price()));
         holder.quantity.setText(String.valueOf(model.getQuantity()));
         holder.size.setText(String.valueOf(model.getSize()));
         Glide.with(context)
