@@ -150,7 +150,7 @@
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:contentDescription="@string/litters_and_supplies"
-                    android:src="@drawable/litter" />
+                    android:src="@drawable/litter_pop" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -254,7 +254,6 @@
                 android:layout_columnWeight="1"
                 android:layout_margin="8dp"
                 android:background="#458AAC"
-                android:gravity="center"
                 android:orientation="vertical"
                 android:padding="8dp">
 
@@ -269,11 +268,24 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
+                    android:layout_marginLeft="8dp"
                     android:gravity="center"
-                    android:text="@string/dog_food2"
+                    android:text="@string/pedigree"
                     android:textColor="@color/text_shadow_white"
                     android:textSize="16sp"
                     android:textStyle="bold" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:text="₹1500"
+                    />
+                <Button
+                    android:id="@+id/pi_btn1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/add_to_cart"
+                    />
             </LinearLayout>
 
             <!-- Item 2 -->
@@ -284,7 +296,6 @@
                 android:layout_columnWeight="1"
                 android:layout_margin="8dp"
                 android:background="#458AAC"
-                android:gravity="center"
                 android:orientation="vertical"
                 android:padding="8dp">
 
@@ -292,17 +303,29 @@
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:contentDescription="@string/item_2"
-                    android:src="@drawable/popitem2" />
+                    android:src="@drawable/catfoodpop" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:gravity="center"
-                    android:text="@string/litter_box"
+                    android:text="Whiskas"
                     android:textColor="@color/text_shadow_white"
                     android:textSize="16sp"
                     android:textStyle="bold" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:text="₹1999"
+                    />
+                <Button
+                    android:id="@+id/pi_btn2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/add_to_cart"
+                    />
             </LinearLayout>
 
             <!-- Item 3 -->
@@ -313,7 +336,6 @@
                 android:layout_columnWeight="1"
                 android:layout_margin="8dp"
                 android:background="#458AAC"
-                android:gravity="center"
                 android:orientation="vertical"
                 android:padding="8dp">
 
@@ -321,17 +343,31 @@
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:contentDescription="@string/item_3"
-                    android:src="@drawable/popitem3" />
+                    android:src="@drawable/pharmacy_pop"
+                    tools:ignore="ImageContrastCheck" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
+                    android:layout_marginLeft="8dp"
                     android:gravity="center"
-                    android:text="@string/cat_food2"
-                    android:textSize="16sp"
+                    android:text="Vetplus Coatex"
                     android:textColor="@color/text_shadow_white"
+                    android:textSize="16sp"
                     android:textStyle="bold" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:text="₹5000"
+                    />
+                <Button
+                    android:id="@+id/pi_btn3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/add_to_cart"
+                    />
             </LinearLayout>
 
             <!-- Item 4 -->
@@ -342,7 +378,6 @@
                 android:layout_columnWeight="1"
                 android:layout_margin="8dp"
                 android:background="#458AAC"
-                android:gravity="center"
                 android:orientation="vertical"
                 android:padding="8dp">
 
@@ -350,75 +385,31 @@
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:contentDescription="@string/item_4"
-                    android:src="@drawable/popitem4"/>
+                    android:src="@drawable/litter"
+                    android:layout_marginLeft="8dp"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:gravity="center"
-                    android:text="@string/pet_sofa"
+                    android:text="Cat Litter"
                     android:textSize="16sp"
+                    android:layout_marginLeft="8dp"
                     android:textColor="@color/text_shadow_white"
                     android:textStyle="bold" />
-            </LinearLayout>
-
-            <!-- Item 5 -->
-            <LinearLayout
-                android:id="@+id/item5"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                android:layout_margin="8dp"
-                android:background="#458AAC"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="8dp">
-
-                <ImageView
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:contentDescription="@string/item_5"
-                    android:src="@drawable/popitem5" />
-
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:gravity="center"
-                    android:text="@string/pet_leash"
-                    android:textColor="@color/text_shadow_white"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <!-- Item 6 -->
-            <LinearLayout
-                android:id="@+id/item6"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                android:layout_margin="8dp"
-                android:background="#458AAC"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="8dp">
-
-                <ImageView
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:contentDescription="@string/item_6"
-                    android:src="@drawable/popitem6" />
-
-                <TextView
+                    android:layout_marginLeft="8dp"
+                    android:text="₹800"
+                    />
+                <Button
+                    android:id="@+id/pi_btn4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:gravity="center"
-                    android:text="@string/dog_bone"
-                    android:textColor="@color/text_shadow_white"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:text="@string/add_to_cart"
+                    />
             </LinearLayout>
         </GridLayout>
     </RelativeLayout>

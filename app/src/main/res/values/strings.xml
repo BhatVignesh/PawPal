@@ -73,5 +73,6 @@
     <string name="logo_content_description">App logo</string>
     <string name="amount_hint">Enter amount</string>
     <string name="googlepay_button_content_description">Google Pay button</string>
+    <string name="pedigree">Pedigree</string>
 
 </resources>
