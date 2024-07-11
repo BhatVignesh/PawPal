@@ -55,7 +55,7 @@ public class LittersSuppliesFragment extends Fragment implements DogFoodAdapter.
         auth = FirebaseAuth.getInstance();
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
-        db.collection("product").document("pharmacy").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        db.collection("product").document("litters").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
