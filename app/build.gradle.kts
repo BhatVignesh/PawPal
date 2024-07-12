@@ -49,6 +49,8 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
     implementation("com.github.denzcoskun:ImageSlideshow:0.1.2") // Correct syntax for Kotlin DSL
-    implementation("com.google.android.gms:play-services-wallet:18.1.1")
+    implementation ("com.stripe:stripe-android:20.10.0")
+    implementation ("com.google.code.gson:gson:2.8.8")
+    implementation ("com.squareup.okhttp3:okhttp:4.9.3")
 
 }

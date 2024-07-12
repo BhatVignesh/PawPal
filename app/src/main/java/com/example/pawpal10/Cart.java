@@ -57,7 +57,6 @@ public class Cart extends Fragment implements CartDetailsAdapter.OnItemClickList
 
         totalAmountTextView = root.findViewById(R.id.totalAmountTextView);
         emptyCartTextView = root.findViewById(R.id.emptyCartTextView);
-        payButton = root.findViewById(R.id.processPaymentButton); // Initialize Pay button
         cartModelList = new ArrayList<>();
         cartDetailsAdapter = new CartDetailsAdapter(getActivity(), cartModelList);
         cartDetailsAdapter.setOnItemClickListener(this); // Set listener
@@ -65,16 +64,6 @@ public class Cart extends Fragment implements CartDetailsAdapter.OnItemClickList
 
         // Fetch cart data from Firestore
         fetchCartItems();
-
-        // Set Pay button click listener
-        payButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO: Implement payment processing and Firebase storage logic here
-                initiatePayment();
-            }
-        });
-
         return root;
     }
 
@@ -111,15 +100,6 @@ public class Cart extends Fragment implements CartDetailsAdapter.OnItemClickList
                                 }
                             }
                             totalAmountTextView.setText("Total Amount: ₹" + totalAmount);
-                            if (cartModelList.isEmpty()) {
-                                emptyCartTextView.setVisibility(View.VISIBLE);
-                                totalAmountTextView.setVisibility(View.GONE);
-                                payButton.setVisibility(View.GONE); // Hide Pay button if cart is empty
-                            } else {
-                                emptyCartTextView.setVisibility(View.GONE);
-                                totalAmountTextView.setVisibility(View.VISIBLE);
-                                payButton.setVisibility(View.VISIBLE); // Show Pay button if cart has items
-                            }
                             cartDetailsAdapter.notifyDataSetChanged(); // Notify adapter of data change
                         } else {
                             Log.d("CartFragment", "Error getting documents: ", task.getException());
@@ -206,46 +186,6 @@ public class Cart extends Fragment implements CartDetailsAdapter.OnItemClickList
                         Toast.makeText(getContext(), "Error checking cart", Toast.LENGTH_SHORT).show();
                     }
                 });
-    }
-
-    // Method to initiate payment processing
-    // Method to initiate payment processing
-    private void initiatePayment() {
-        // Replace with actual total amount logic
-        long totalAmount = getTotalAmount();
-
-        // Get current timestamp in milliseconds
-        long timestampMillis = System.currentTimeMillis();
-
-        // Convert timestamp to hours
-        long timestampHours = timestampMillis / (60 * 60 * 1000);
-
-        // Example: Store payment data in Firebase
-        Map<String, Object> paymentData = new HashMap<>();
-        paymentData.put("amount", totalAmount);
-        paymentData.put("timestamp_hours", timestampHours);
-        paymentData.put("email", currentUser.getEmail()); // Assuming currentUser is FirebaseUser
-
-        db.collection("payments")
-                .add(paymentData)
-                .addOnSuccessListener(documentReference -> {
-                    Toast.makeText(getContext(), "Payment successful! Payment ID: " + documentReference.getId(), Toast.LENGTH_SHORT).show();
-                    clearCart(); // Optional: Clear cart after successful payment
-                })
-                .addOnFailureListener(e -> {
-                    Toast.makeText(getContext(), "Failed to process payment", Toast.LENGTH_SHORT).show();
-                    Log.e("Payment", "Error adding document", e);
-                });
-    }
-
-
-    // Method to clear cart after successful payment
-    private void clearCart() {
-        // TODO: Implement logic to clear cart (delete all items from Firestore cart collection)
-        // For demonstration, let's assume we clear local cartModelList
-        cartModelList.clear();
-        cartDetailsAdapter.notifyDataSetChanged();
-        fetchCartItems(); // Refresh cart items after clearing
     }
 
     // Method to get total amount from TextView (example implementation)

@@ -52,18 +52,6 @@
             android:padding="16dp"
             android:textSize="20dp" />
 
-        <Button
-            android:id="@+id/processPaymentButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="16dp"
-            android:padding="12dp"
-            android:text="Process Payment"
-            android:textSize="18sp"
-            android:backgroundTint="#458AAC"
-            android:textColor="#ffffff" />
-
 
     </LinearLayout>
 
