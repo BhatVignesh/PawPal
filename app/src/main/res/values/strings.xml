@@ -74,5 +74,12 @@
     <string name="amount_hint">Enter amount</string>
     <string name="googlepay_button_content_description">Google Pay button</string>
     <string name="pedigree">Pedigree</string>
+    <string name="_1500">₹1500</string>
+    <string name="whiskas">Whiskas</string>
+    <string name="_1999">₹1999</string>
+    <string name="vetplus_coatex">Vetplus Coatex</string>
+    <string name="_5000">₹5000</string>
+    <string name="cat_litter">Cat Litter</string>
+    <string name="_800">₹800</string>
 
 </resources>
