@@ -21,16 +21,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"/>
 
-            <GridLayout
-                android:id="@+id/timeSlotGrid"
+            <LinearLayout
+                android:id="@+id/timeSlotContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:columnCount="2"
-                android:rowCount="6">
+                android:orientation="vertical"
+                android:layout_marginBottom="16dp">
                 <!-- Time Slot Buttons will be added programmatically -->
-            </GridLayout>
-
+            </LinearLayout>
 
             <EditText
                 android:id="@+id/purposeEditText"

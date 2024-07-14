@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.GridLayout;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -33,7 +34,7 @@ import java.util.Locale;
 
 public class AppointmentBookingFragment extends Fragment {
 
-    private GridLayout timeSlotGrid;
+    private LinearLayout timeSlotContainer;
     private CalendarView calendarView;
     private EditText purposeEditText;
     private Button bookButton;
@@ -58,7 +59,7 @@ public class AppointmentBookingFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        timeSlotGrid = view.findViewById(R.id.timeSlotGrid);
+        timeSlotContainer = view.findViewById(R.id.timeSlotContainer);
         calendarView = view.findViewById(R.id.calendarView);
         purposeEditText = view.findViewById(R.id.purposeEditText);
         bookButton = view.findViewById(R.id.bookButton);
@@ -91,7 +92,7 @@ public class AppointmentBookingFragment extends Fragment {
                 }
 
                 // Format selected date
-                SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyyy", Locale.getDefault());
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
                 selectedDate = sdf.format(selectedCalendar.getTime());
 
                 // Update available slots
@@ -146,7 +147,7 @@ public class AppointmentBookingFragment extends Fragment {
             // Set default background
             slotButton.setBackgroundResource(R.drawable.slot_background);
 
-            timeSlotGrid.addView(slotButton);
+            timeSlotContainer.addView(slotButton);
         }
     }
 
@@ -173,9 +174,9 @@ public class AppointmentBookingFragment extends Fragment {
     }
 
     private void updateSlotButtons(ArrayList<String> bookedSlots) {
-        int childCount = timeSlotGrid.getChildCount();
+        int childCount = timeSlotContainer.getChildCount();
         for (int i = 0; i < childCount; i++) {
-            View child = timeSlotGrid.getChildAt(i);
+            View child = timeSlotContainer.getChildAt(i);
             if (child instanceof Button) {
                 Button slotButton = (Button) child;
                 String slot = slotButton.getText().toString();
