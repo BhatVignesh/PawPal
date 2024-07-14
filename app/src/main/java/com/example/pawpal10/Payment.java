@@ -161,66 +161,94 @@ public class Payment extends AppCompatActivity {
                                 cartItemList.add(productName);
                             }
 
-                            Map<String, Object> order = new HashMap<>();
-                            order.put("address", editTextAddress.getText().toString());
-                            order.put("date", currentDate);
-                            order.put("mbno", editTextMbno.getText().toString());
-                            order.put("total_amount", totalAmount);
-                            order.put("products", cartItemList);
-
+                            // Fetch the existing orders
                             db.collection("orders")
                                     .document(auth.getCurrentUser().getUid())
-                                    .set(order)
+                                    .get()
                                     .addOnCompleteListener(orderTask -> {
-                                        if (!orderTask.isSuccessful()) {
-                                            Toast.makeText(Payment.this, "Failed to add order", Toast.LENGTH_SHORT).show();
+                                        if (orderTask.isSuccessful()) {
+                                            DocumentSnapshot document = orderTask.getResult();
+                                            Map<String, Object> order = new HashMap<>();
+                                            if (document.exists()) {
+                                                // Document exists, get the existing data
+                                                order = document.getData();
+                                            }
+
+                                            // Determine the next order number
+                                            int nextOrderNumber = 1;
+                                            if (order != null && !order.isEmpty()) {
+                                                nextOrderNumber = order.size() + 1;
+                                            }
+
+                                            // Create a new order map
+                                            Map<String, Object> newOrder = new HashMap<>();
+                                            newOrder.put("address", editTextAddress.getText().toString());
+                                            newOrder.put("date", currentDate);
+                                            newOrder.put("mbno", editTextMbno.getText().toString());
+                                            newOrder.put("total_amount", totalAmount);
+                                            newOrder.put("products", cartItemList);
+
+                                            // Add the new order to the existing orders
+                                            order.put(String.valueOf(nextOrderNumber), newOrder);
+
+                                            // Update the document with the new orders
+                                            db.collection("orders")
+                                                    .document(auth.getCurrentUser().getUid())
+                                                    .set(order)
+                                                    .addOnCompleteListener(updateTask -> {
+                                                        if (!updateTask.isSuccessful()) {
+                                                            Toast.makeText(Payment.this, "Failed to add order: " + updateTask.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                                            Log.e(TAG, "Failed to add order", updateTask.getException());
+                                                        } else {
+                                                            deleteCartItems(); // Delete cart items after placing the order
+                                                        }
+                                                    });
+                                        } else {
+                                            Toast.makeText(Payment.this, "Failed to fetch previous orders: " + orderTask.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                            Log.e(TAG, "Error fetching previous orders", orderTask.getException());
                                         }
                                     });
-
-                            // Delete cart items after placing the order
-                            deleteCartItems();
-
                         } else {
+                            Toast.makeText(Payment.this, "Failed to fetch cart items: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                             Log.e(TAG, "Error fetching cart items", task.getException());
-                            Toast.makeText(Payment.this, "Failed to fetch cart items", Toast.LENGTH_SHORT).show();
                         }
                     });
+        }}
 
-            }
-    }
-    private void deleteCartItems() {
-        String userId = auth.getCurrentUser().getUid();
-        db.collection("cartInfo")
-                .document(userId)
-                .collection("products")
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        WriteBatch batch = db.batch();
-                        for (DocumentSnapshot document : task.getResult()) {
-                            batch.delete(document.getReference());
-                        }
-                        batch.commit().addOnCompleteListener(batchTask -> {
-                            if (batchTask.isSuccessful()) {
-                                db.collection("cartInfo")
-                                        .document(userId)
-                                        .delete()
-                                        .addOnCompleteListener(deletetask -> {
-                                            if (deletetask.isSuccessful()) {
-                                                Intent intent = new Intent(Payment.this, MainActivity.class);
-                                                startActivity(intent);
-                                                finish();
-                                            } else {
-                                                Toast.makeText(Payment.this, "Failed to delete cart items", Toast.LENGTH_SHORT).show();
-                                            }
-                                        });
+            private void deleteCartItems() {
+                String userId = auth.getCurrentUser().getUid();
+                db.collection("cartInfo")
+                        .document(userId)
+                        .collection("products")
+                        .get()
+                        .addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                WriteBatch batch = db.batch();
+                                for (DocumentSnapshot document : task.getResult()) {
+                                    batch.delete(document.getReference());
+                                }
+                                batch.commit().addOnCompleteListener(batchTask -> {
+                                    if (batchTask.isSuccessful()) {
+                                        db.collection("cartInfo")
+                                                .document(userId)
+                                                .delete()
+                                                .addOnCompleteListener(deletetask -> {
+                                                    if (deletetask.isSuccessful()) {
+                                                        Intent intent = new Intent(Payment.this, MainActivity.class);
+                                                        startActivity(intent);
+                                                        finish();
+                                                    } else {
+                                                        Toast.makeText(Payment.this, "Failed to delete cart items", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                });
+                                    } else {
+                                        Toast.makeText(Payment.this, "Failed to delete cart items", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
                             } else {
-                                Toast.makeText(Payment.this, "Failed to delete cart items", Toast.LENGTH_SHORT).show();
+                                Log.e(TAG, "Error fetching cart items", task.getException());
+                                Toast.makeText(Payment.this, "Failed to fetch cart items", Toast.LENGTH_SHORT).show();
                             }
                         });
-                    } else {
-                        Log.e(TAG, "Error fetching cart items", task.getException());
-                        Toast.makeText(Payment.this, "Failed to fetch cart items", Toast.LENGTH_SHORT).show();
-                    }
-                });
-}}
+            }}
+

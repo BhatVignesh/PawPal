@@ -22,7 +22,7 @@ public class profileFragment extends Fragment {
     private FirebaseUser user;
     private TextView profileTextView;
     private Button logoutButton;
-    private Button bookedAppointmentsButton;
+    private Button bookedAppointmentsButton,viewOrdersButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -35,6 +35,7 @@ public class profileFragment extends Fragment {
         profileTextView = view.findViewById(R.id.profileTextView);
         logoutButton = view.findViewById(R.id.logoutButton);
         bookedAppointmentsButton = view.findViewById(R.id.bookedAppointmentsButton);
+        viewOrdersButton=view.findViewById(R.id.viewOrdersbtn);
 
         if (user == null) {
             Intent intent = new Intent(getActivity(), Login.class);
@@ -67,6 +68,12 @@ public class profileFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     navigateToFragment(new BookedAppointmentsFragment());
+                }
+            });
+            viewOrdersButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    navigateToFragment(new ViewOrders());
                 }
             });
         }
