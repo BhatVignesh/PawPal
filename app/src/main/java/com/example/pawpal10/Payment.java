@@ -41,6 +41,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.regex.Pattern;
 
 public class Payment extends AppCompatActivity {
 
@@ -53,7 +54,7 @@ public class Payment extends AppCompatActivity {
     TextInputEditText editTextMbno, editTextAddress;
     FirebaseAuth auth;
     FirebaseFirestore db;
-    ArrayList<String> cartItemList=new ArrayList<>();
+    ArrayList<String> cartItemList = new ArrayList<>();
     String currentDate;
     long totalAmount;
     TextView emptyCartTextView;
@@ -62,17 +63,16 @@ public class Payment extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment);
-        db=FirebaseFirestore.getInstance();
-        auth=FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
+        auth = FirebaseAuth.getInstance();
         pay = findViewById(R.id.payment);
         progressBar = findViewById(R.id.payment_progress_bar);
         paymentSheet = new PaymentSheet(this, this::onPaymentSheetResult);
         progressBar.setVisibility(View.GONE);
-        editTextMbno=findViewById(R.id.mbnoEdit);
-        editTextAddress=findViewById(R.id.addressEdit);
+        editTextMbno = findViewById(R.id.mbnoEdit);
+        editTextAddress = findViewById(R.id.addressEdit);
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         currentDate = sdf.format(new Date());
-
 
         // Retrieve total amount from Intent
         totalAmount = getIntent().getLongExtra("TOTAL_AMOUNT", 0);
@@ -80,10 +80,29 @@ public class Payment extends AppCompatActivity {
         pay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progressBar.setVisibility(View.VISIBLE);
-                makePaymentRequest(totalAmount);
+                if (validateInput()) {
+                    progressBar.setVisibility(View.VISIBLE);
+                    makePaymentRequest(totalAmount);
+                }
             }
         });
+    }
+
+    private boolean validateInput() {
+        String mobileNumber = editTextMbno.getText().toString().trim();
+        String address = editTextAddress.getText().toString().trim();
+
+        if (mobileNumber.isEmpty() || !Pattern.matches("^[0-9]{10}$", mobileNumber)) {
+            Toast.makeText(this, "Please enter a valid 10-digit mobile number", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (address.isEmpty()) {
+            Toast.makeText(this, "Please enter a valid address", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        return true;
     }
 
     private void makePaymentRequest(long amount) {
@@ -92,7 +111,7 @@ public class Payment extends AppCompatActivity {
 
         JSONObject requestBody = new JSONObject();
         try {
-            requestBody.put("amount", amount*100);
+            requestBody.put("amount", amount * 100);
         } catch (JSONException e) {
             Log.e(TAG, "Error creating JSON request body", e);
         }
@@ -142,13 +161,13 @@ public class Payment extends AppCompatActivity {
     private void onPaymentSheetResult(PaymentSheetResult paymentSheetResult) {
         if (paymentSheetResult instanceof PaymentSheetResult.Canceled) {
             Log.d(TAG, "PaymentSheet: Canceled");
-            Toast.makeText(this,"Payment Cancelled",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Payment Cancelled", Toast.LENGTH_SHORT).show();
         } else if (paymentSheetResult instanceof PaymentSheetResult.Failed) {
             Log.e(TAG, "PaymentSheet: Failed", ((PaymentSheetResult.Failed) paymentSheetResult).getError());
-            Toast.makeText(this,"Payment Failed",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Payment Failed", Toast.LENGTH_SHORT).show();
         } else if (paymentSheetResult instanceof PaymentSheetResult.Completed) {
             Log.d(TAG, "PaymentSheet: Completed");
-            Toast.makeText(this,"Payment Complete",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Payment Complete", Toast.LENGTH_SHORT).show();
             db.collection("cartInfo")
                     .document(auth.getCurrentUser().getUid())
                     .collection("products")
@@ -213,42 +232,43 @@ public class Payment extends AppCompatActivity {
                             Log.e(TAG, "Error fetching cart items", task.getException());
                         }
                     });
-        }}
+        }
+    }
 
-            private void deleteCartItems() {
-                String userId = auth.getCurrentUser().getUid();
-                db.collection("cartInfo")
-                        .document(userId)
-                        .collection("products")
-                        .get()
-                        .addOnCompleteListener(task -> {
-                            if (task.isSuccessful()) {
-                                WriteBatch batch = db.batch();
-                                for (DocumentSnapshot document : task.getResult()) {
-                                    batch.delete(document.getReference());
-                                }
-                                batch.commit().addOnCompleteListener(batchTask -> {
-                                    if (batchTask.isSuccessful()) {
-                                        db.collection("cartInfo")
-                                                .document(userId)
-                                                .delete()
-                                                .addOnCompleteListener(deletetask -> {
-                                                    if (deletetask.isSuccessful()) {
-                                                        Intent intent = new Intent(Payment.this, MainActivity.class);
-                                                        startActivity(intent);
-                                                        finish();
-                                                    } else {
-                                                        Toast.makeText(Payment.this, "Failed to delete cart items", Toast.LENGTH_SHORT).show();
-                                                    }
-                                                });
-                                    } else {
-                                        Toast.makeText(Payment.this, "Failed to delete cart items", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
+    private void deleteCartItems() {
+        String userId = auth.getCurrentUser().getUid();
+        db.collection("cartInfo")
+                .document(userId)
+                .collection("products")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        WriteBatch batch = db.batch();
+                        for (DocumentSnapshot document : task.getResult()) {
+                            batch.delete(document.getReference());
+                        }
+                        batch.commit().addOnCompleteListener(batchTask -> {
+                            if (batchTask.isSuccessful()) {
+                                db.collection("cartInfo")
+                                        .document(userId)
+                                        .delete()
+                                        .addOnCompleteListener(deletetask -> {
+                                            if (deletetask.isSuccessful()) {
+                                                Intent intent = new Intent(Payment.this, MainActivity.class);
+                                                startActivity(intent);
+                                                finish();
+                                            } else {
+                                                Toast.makeText(Payment.this, "Failed to delete cart items", Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
                             } else {
-                                Log.e(TAG, "Error fetching cart items", task.getException());
-                                Toast.makeText(Payment.this, "Failed to fetch cart items", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(Payment.this, "Failed to delete cart items", Toast.LENGTH_SHORT).show();
                             }
                         });
-            }}
-
+                    } else {
+                        Log.e(TAG, "Error fetching cart items", task.getException());
+                        Toast.makeText(Payment.this, "Failed to fetch cart items", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+}

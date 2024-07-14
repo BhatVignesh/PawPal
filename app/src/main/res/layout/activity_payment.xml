@@ -4,26 +4,44 @@
     android:id="@+id/payment_page"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/main_bg"
+    android:background="@drawable/bg_gradient"
     tools:context=".Payment">
 
+    <!-- Title TextView -->
+    <TextView
+        android:id="@+id/titleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="20dp"
+        android:text="@string/checkout"
+        android:textSize="28sp"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Mobile Number Input Layout -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/mbnoLayout"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="130dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
+        android:padding="16dp"
+        android:background="@drawable/input_bg"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/titleTextView">
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/mbnoInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:boxBackgroundMode="outline"
-            app:boxStrokeColor="@color/black"
+            app:boxStrokeColor="@color/primary"
             app:boxStrokeWidth="2dp"
             app:boxBackgroundColor="@android:color/white"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -37,19 +55,21 @@
                 android:layout_height="wrap_content"
                 android:hint="Mobile No"
                 android:inputType="number"
-                android:maxLength="10"/>
+                android:maxLength="10" />
         </com.google.android.material.textfield.TextInputLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <!-- Address Input Layout -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/addressLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
+        android:padding="16dp"
+        android:background="@drawable/input_bg"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mbnoLayout">
 
@@ -58,7 +78,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:boxBackgroundMode="outline"
-            app:boxStrokeColor="@color/black"
+            app:boxStrokeColor="@color/primary"
             app:boxStrokeWidth="2dp"
             app:boxBackgroundColor="@android:color/white"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -70,22 +90,26 @@
                 android:id="@+id/addressEdit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Address"
-                />
+                android:hint="Address" />
         </com.google.android.material.textfield.TextInputLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <!-- Payment Button -->
     <Button
         android:id="@+id/payment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="144dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="24dp"
+        android:padding="16dp"
         android:text="Pay"
+        android:textColor="@color/white"
+        android:background="@drawable/button_bg"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:backgroundTint="#458AAC"/>
+        app:layout_constraintStart_toStartOf="parent" />
 
+    <!-- Progress Bar -->
     <ProgressBar
         android:id="@+id/payment_progress_bar"
         style="?android:attr/progressBarStyle"
@@ -95,16 +119,5 @@
         app:layout_constraintBottom_toTopOf="@+id/payment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:text="@string/checkout"
-        android:textSize="25sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
