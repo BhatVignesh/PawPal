@@ -88,7 +88,7 @@ public class Payment extends AppCompatActivity {
 
     private void makePaymentRequest(long amount) {
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://192.168.0.123:3000/payment-sheet";
+        String url = "https://pawpalserver.glitch.me/payment-sheet";
 
         JSONObject requestBody = new JSONObject();
         try {
