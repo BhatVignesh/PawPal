@@ -81,5 +81,6 @@
     <string name="_5000">₹5000</string>
     <string name="cat_litter">Cat Litter</string>
     <string name="_800">₹800</string>
+    <string name="checkout">Checkout</string>
 
 </resources>

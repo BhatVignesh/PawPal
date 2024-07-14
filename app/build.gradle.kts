@@ -49,7 +49,12 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
     implementation("com.github.denzcoskun:ImageSlideshow:0.1.2") // Correct syntax for Kotlin DSL
-    implementation ("com.stripe:stripe-android:20.10.0")
+    implementation("com.stripe:stripe-android:20.48.0")
+    implementation("com.stripe:stripecardscan:20.48.0")
+    implementation("com.google.android.libraries.places:places:2.6.0")
+    implementation("com.stripe:stripe-java:26.0.0")
+    implementation("com.android.volley:volley:1.2.1")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.3")
     implementation ("com.google.code.gson:gson:2.8.8")
     implementation ("com.squareup.okhttp3:okhttp:4.9.3")
 
