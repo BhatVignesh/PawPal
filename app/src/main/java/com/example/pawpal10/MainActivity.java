@@ -103,9 +103,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void redirectToLogin() {
-//        Intent intent = new Intent(getApplicationContext(), Login.class);
-//        startActivity(intent);
-//        finish();
+        Intent intent = new Intent(getApplicationContext(), Login.class);
+        startActivity(intent);
+        finish();
     }
 
     private void initializeSearchView() {

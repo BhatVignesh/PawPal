@@ -84,7 +84,6 @@ public class profileFragment extends Fragment {
     private void navigateToFragment(Fragment fragment) {
         FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
         transaction.replace(R.id.frameLayout, fragment);
-        transaction.addToBackStack(null);
         transaction.commit();
     }
 }
