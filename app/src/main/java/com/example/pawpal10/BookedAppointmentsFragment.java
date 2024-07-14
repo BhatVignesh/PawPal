@@ -4,14 +4,16 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -28,6 +30,7 @@ public class BookedAppointmentsFragment extends Fragment {
     private List<Appointment> appointmentList;
     private FirebaseFirestore db;
     private FirebaseUser user;
+    private TextView noAppointmentTextView;
 
     @Nullable
     @Override
@@ -36,6 +39,7 @@ public class BookedAppointmentsFragment extends Fragment {
 
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        noAppointmentTextView = view.findViewById(R.id.noAppointmentTextView);
 
         appointmentList = new ArrayList<>();
         adapter = new AppointmentsAdapter(appointmentList);
@@ -58,11 +62,19 @@ public class BookedAppointmentsFragment extends Fragment {
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        appointmentList.clear(); // Clear existing appointments
                         for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
                             Appointment appointment = document.toObject(Appointment.class);
                             appointmentList.add(appointment);
                         }
                         adapter.notifyDataSetChanged();
+
+                        // Show/hide noAppointmentTextView based on appointmentList size
+                        if (appointmentList.isEmpty()) {
+                            noAppointmentTextView.setVisibility(View.VISIBLE);
+                        } else {
+                            noAppointmentTextView.setVisibility(View.GONE);
+                        }
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
