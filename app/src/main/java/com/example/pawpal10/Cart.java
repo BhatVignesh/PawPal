@@ -1,5 +1,6 @@
 package com.example.pawpal10;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -38,7 +39,7 @@ public class Cart extends Fragment implements CartDetailsAdapter.OnItemClickList
     List<CartDetailsModel> cartModelList;
     TextView totalAmountTextView;
     TextView emptyCartTextView;
-    Button payButton; // Added Pay button
+    Button proceedToPaymentBtn; // Added Pay button
 
     public Cart() {
         // Required empty public constructor
@@ -54,6 +55,7 @@ public class Cart extends Fragment implements CartDetailsAdapter.OnItemClickList
         recyclerView = root.findViewById(R.id.recyclerViewCart);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        proceedToPaymentBtn=root.findViewById(R.id.proceed_to_payment_btn);
 
         totalAmountTextView = root.findViewById(R.id.totalAmountTextView);
         emptyCartTextView = root.findViewById(R.id.emptyCartTextView);
@@ -64,6 +66,15 @@ public class Cart extends Fragment implements CartDetailsAdapter.OnItemClickList
 
         // Fetch cart data from Firestore
         fetchCartItems();
+        proceedToPaymentBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                long totalAmount = getTotalAmount();
+                Intent intent = new Intent(getActivity(), Payment.class);
+                intent.putExtra("TOTAL_AMOUNT", totalAmount);
+                startActivity(intent);
+            }
+        });
         return root;
     }
 
@@ -77,7 +88,7 @@ public class Cart extends Fragment implements CartDetailsAdapter.OnItemClickList
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             long totalAmount = 0; // Reset total amount
-                            cartModelList.clear();
+                            cartModelList.clear(); // Clear the list before adding new items
                             for (DocumentSnapshot document : task.getResult()) {
                                 String productName = document.getString("Product_name");
 
@@ -99,6 +110,22 @@ public class Cart extends Fragment implements CartDetailsAdapter.OnItemClickList
                                     totalAmount += totalPrice;
                                 }
                             }
+
+                            // Log the size of cartModelList for debugging
+                            Log.d("CartFragment", "Cart items fetched, size: " + cartModelList.size());
+
+                            if (cartModelList.isEmpty()) {
+                                emptyCartTextView.setVisibility(View.VISIBLE);
+                                recyclerView.setVisibility(View.GONE);
+                                totalAmountTextView.setVisibility(View.GONE);
+                                proceedToPaymentBtn.setVisibility(View.GONE);
+                            } else {
+                                emptyCartTextView.setVisibility(View.GONE);
+                                recyclerView.setVisibility(View.VISIBLE);
+                                totalAmountTextView.setVisibility(View.VISIBLE);
+                                proceedToPaymentBtn.setVisibility(View.VISIBLE);
+                            }
+
                             totalAmountTextView.setText("Total Amount: ₹" + totalAmount);
                             cartDetailsAdapter.notifyDataSetChanged(); // Notify adapter of data change
                         } else {
@@ -107,6 +134,7 @@ public class Cart extends Fragment implements CartDetailsAdapter.OnItemClickList
                     }
                 });
     }
+
 
     @Override
     public void onAdd1ToCartClick(CartDetailsModel item) {
