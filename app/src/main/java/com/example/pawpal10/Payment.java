@@ -88,7 +88,7 @@ public class Payment extends AppCompatActivity {
 
     private void makePaymentRequest(long amount) {
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://192.168.0.123:3000/payment-sheet"; // Replace with your actual backend endpoint
+        String url = "http://192.168.0.123:3000/payment-sheet";
 
         JSONObject requestBody = new JSONObject();
         try {
@@ -129,7 +129,7 @@ public class Payment extends AppCompatActivity {
     }
 
     private void presentPaymentSheet() {
-        PaymentSheet.Configuration configuration = new PaymentSheet.Configuration.Builder("Example, Inc.")
+        PaymentSheet.Configuration configuration = new PaymentSheet.Configuration.Builder("PawPal")
                 .customer(customerConfig)
                 .allowsDelayedPaymentMethods(true)
                 .build();

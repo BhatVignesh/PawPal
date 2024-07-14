@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -35,13 +36,14 @@ public class ViewOrders extends Fragment {
     private OrderAdapter orderAdapter;
     private ArrayList<OrderItem> orderList;
     private FirebaseFirestore db;
-    FirebaseAuth auth;
+    private FirebaseAuth auth;
+    private TextView noOrdersTextView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         db = FirebaseFirestore.getInstance();
-        auth=FirebaseAuth.getInstance();
+        auth = FirebaseAuth.getInstance();
         orderList = new ArrayList<>();
         orderAdapter = new OrderAdapter(getContext(), orderList);
     }
@@ -51,6 +53,7 @@ public class ViewOrders extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_view_orders, container, false);
 
+        noOrdersTextView = view.findViewById(R.id.No_orders_text);
         recyclerViewOrders = view.findViewById(R.id.orderRecyclerView);
         recyclerViewOrders.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerViewOrders.setAdapter(orderAdapter);
@@ -64,21 +67,35 @@ public class ViewOrders extends Fragment {
         db.collection("orders").document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.isSuccessful()){
-                    DocumentSnapshot document=task.getResult();
-                    Map<String,Object> ordersMap=(Map<String, Object>) document.getData();
-                    for(String key:ordersMap.keySet()){
-                        Map<String,Object> order=(Map<String, Object>) ordersMap.get(key);
-                        String Date=(String) order.get("date");
-                        Long Total_amount=(Long) order.get("total_amount");
-                        List<String> product_list=(List<String>) order.get("products");
-                        OrderItem Order=new OrderItem(Date,product_list,Total_amount);
-                        orderList.add(Order);
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Map<String, Object> ordersMap = document.getData();
+                        if (ordersMap != null && !ordersMap.isEmpty()) {
+                            noOrdersTextView.setVisibility(View.GONE);
+                            for (String key : ordersMap.keySet()) {
+                                Map<String, Object> order = (Map<String, Object>) ordersMap.get(key);
+                                String date = (String) order.get("date");
+                                Long totalAmount = (Long) order.get("total_amount");
+                                List<String> productList = (List<String>) order.get("products");
+                                OrderItem orderItem = new OrderItem(date, productList, totalAmount);
+                                orderList.add(orderItem);
+                            }
+                        } else {
+                            noOrdersTextView.setVisibility(View.VISIBLE);
+                        }
+                        orderAdapter.notifyDataSetChanged();
+                    } else {
+                        noOrdersTextView.setVisibility(View.VISIBLE);
+                        Log.d(TAG, "No such document");
                     }
-                    orderAdapter.notifyDataSetChanged();
+                } else {
+                    noOrdersTextView.setVisibility(View.VISIBLE);
+                    Log.d(TAG, "get failed with ", task.getException());
                 }
             }
         });
     }
 }
+
 

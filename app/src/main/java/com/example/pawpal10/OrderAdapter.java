@@ -36,7 +36,6 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         OrderItem order = orderList.get(position);
         holder.textViewDate.setText(order.getDate());
         holder.textViewTotalAmount.setText("₹"+String.valueOf(order.getTotalAmount()));
-
         ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, order.getProducts());
         holder.listViewProducts.setAdapter(adapter);
 
