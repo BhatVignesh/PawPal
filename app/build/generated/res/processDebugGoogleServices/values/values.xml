@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="gcm_defaultSenderId" translatable="false">914568799512</string>
+    <string name="google_api_key" translatable="false">AIzaSyA4poleWepvKHOSNSZ-hRBj2zjwCjxKREs</string>
+    <string name="google_app_id" translatable="false">1:914568799512:android:6a49a2356c5c3bb484aa6d</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyA4poleWepvKHOSNSZ-hRBj2zjwCjxKREs</string>
+    <string name="google_storage_bucket" translatable="false">pawpal-7c02f.appspot.com</string>
+    <string name="project_id" translatable="false">pawpal-7c02f</string>
+</resources>
