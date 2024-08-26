@@ -10,5 +10,6 @@
     <color name="primary">#458AAC</color>
     <color name="light_blue">#B3E5FC</color>
     <color name="dark_blue">#0288D1</color>
-
+    <color name="star_color">#FFD700</color>
+    <color name="empty_star_color">#CCCCCC</color>
 </resources>
