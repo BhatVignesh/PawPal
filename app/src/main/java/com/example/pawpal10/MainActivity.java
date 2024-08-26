@@ -83,6 +83,12 @@ public class MainActivity extends AppCompatActivity {
         fragmentMap.put(R.id.catagory_icon, new catagoryFragment());
         fragmentMap.put(R.id.paw_icon, new pawFragment());
         fragmentMap.put(R.id.profile_icon, new profileFragment());
+        fragmentMap.put(R.id.profile_icon, new DogFoodFragment());
+        fragmentMap.put(R.id.profile_icon, new CatFoodFragment());
+        fragmentMap.put(R.id.profile_icon, new PharmacyFragment());
+        fragmentMap.put(R.id.profile_icon, new LittersSuppliesFragment());
+        fragmentMap.put(R.id.profile_icon, new GroomingFragment());
+        fragmentMap.put(R.id.profile_icon, new ToysFragment());
 
         // Initialize searchFragmentMap for search view items
         searchFragmentMap = new HashMap<>();
@@ -90,6 +96,12 @@ public class MainActivity extends AppCompatActivity {
         searchFragmentMap.put("Category", new catagoryFragment());
         searchFragmentMap.put("Paw", new pawFragment());
         searchFragmentMap.put("Profile", new profileFragment());
+        searchFragmentMap.put("Dog Food", new DogFoodFragment());
+        searchFragmentMap.put("Cat Food", new CatFoodFragment());
+        searchFragmentMap.put("Pharmacy", new PharmacyFragment());
+        searchFragmentMap.put("Litters and Supplies", new LittersSuppliesFragment());
+        searchFragmentMap.put("Grooming", new GroomingFragment());
+        searchFragmentMap.put("Toys", new ToysFragment());
 
         // Set initial fragment
         replaceFragment(new HomeFragment());
@@ -117,6 +129,12 @@ public class MainActivity extends AppCompatActivity {
         arrayList.add("Home");
         arrayList.add("Category");
         arrayList.add("Paw");
+        arrayList.add("Dog Food");
+        arrayList.add("Cat Food");
+        arrayList.add("Pharmacy");
+        arrayList.add("Litters and Supplies");
+        arrayList.add("Grooming");
+        arrayList.add("Toys");
         arrayList.add("Profile");
 
         arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, arrayList);
