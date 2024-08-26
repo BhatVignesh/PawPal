@@ -283,6 +283,7 @@
                     android:id="@+id/pi_btn1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:backgroundTint="#5C97B5"
                     android:text="@string/add_to_cart" />
             </LinearLayout>
 
@@ -324,7 +325,8 @@
                     android:id="@+id/pi_btn2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/add_to_cart" />
+                    android:text="@string/add_to_cart"
+                    android:backgroundTint="#5C97B5"/>
             </LinearLayout>
 
             <!-- Item 3 -->
@@ -364,7 +366,8 @@
                     android:id="@+id/pi_btn3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/add_to_cart" />
+                    android:text="@string/add_to_cart"
+                    android:backgroundTint="#5C97B5"/>
             </LinearLayout>
 
             <!-- Item 4 -->
@@ -404,7 +407,8 @@
                     android:id="@+id/pi_btn4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/add_to_cart" />
+                    android:text="@string/add_to_cart"
+                    android:backgroundTint="#5C97B5"/>
             </LinearLayout>
         </GridLayout>
     </RelativeLayout>

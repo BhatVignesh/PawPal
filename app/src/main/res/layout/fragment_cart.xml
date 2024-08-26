@@ -52,7 +52,7 @@
                 android:layout_height="wrap_content"
                 android:text="Proceed to Payment"
                 android:textColor="@color/white"
-                android:background="@drawable/button_bg"/>
+                android:backgroundTint="#5C97B5"/>
         </LinearLayout>
 
 
