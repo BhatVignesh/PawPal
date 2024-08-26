@@ -83,12 +83,6 @@ public class MainActivity extends AppCompatActivity {
         fragmentMap.put(R.id.catagory_icon, new catagoryFragment());
         fragmentMap.put(R.id.paw_icon, new pawFragment());
         fragmentMap.put(R.id.profile_icon, new profileFragment());
-        fragmentMap.put(R.id.profile_icon, new DogFoodFragment());
-        fragmentMap.put(R.id.profile_icon, new CatFoodFragment());
-        fragmentMap.put(R.id.profile_icon, new PharmacyFragment());
-        fragmentMap.put(R.id.profile_icon, new LittersSuppliesFragment());
-        fragmentMap.put(R.id.profile_icon, new GroomingFragment());
-        fragmentMap.put(R.id.profile_icon, new ToysFragment());
 
         // Initialize searchFragmentMap for search view items
         searchFragmentMap = new HashMap<>();
